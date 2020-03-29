@@ -1,0 +1,40 @@
+extends layout
+
+block content
+
+    article(id='top' class='wrapper style2')
+        div.container
+            header
+                h2
+                    img(src='/images/musicalbox.png' width='64' lenght='64' alt='')
+                    span Liste des utilisateurs
+                    ul.container
+                    if (users)
+                        table.default
+                            tr
+                                th Login
+                                th Role 
+                                th Password
+
+                        if (connection)
+                            each obj in users
+                                tr
+                                    td= obj.login
+                                    td= obj.role
+                                    td= obj.passe
+                        else 
+                            h4(style='color: red;') Admin not connected :/
+                    else
+                        h4(style='color: red;') Pas d'utilisateurs pour le moment...
+
+            div.row
+                div.col-12
+                    form(name='login' method='post' action='../users/connection' enctype='multipart/form-data')
+                        div(class='row gtr-uniform')
+                            div(class='col-6')
+                                input(type="text", name='login' id='login' placeholder='Login')
+                                input(type="password", name='password' id='password' placeholder='Password')
+                        div(class='col-12')
+                            ul(class='actions')
+                                li
+                                    input(type='submit' value='Se connecter' class='primary')

@@ -1,0 +1,16 @@
+{
+    "songs": [
+        {
+            "titre": "Anoko_no_secret",
+            "auteur": "Eve",
+            "genre": "Jpop",
+            "id": 1
+        },
+        {
+            "titre": "Comme_tu_veux",
+            "auteur": "Eve",
+            "genre": "Jpop",
+            "id": 2
+        }
+    ]
+}

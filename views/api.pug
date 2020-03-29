@@ -1,0 +1,92 @@
+extends layout
+
+block content
+
+  article(id='top' class='wrapper style1')
+    div.container
+      h1(class='center') Apnotpan / Api
+          //- form(action="../apnotpan/api" method="post")
+          //-     <button type="submit"><i class="fa fa-search"></i></button>
+      
+
+    .container-fluid
+      h2(class='center') Films actuellement en salles : 
+
+      div(class='date-periode')
+        form(method="post" action="getdate" id='dateOfFilm' enctype='multipart/form-data')
+          div(class="form-content")
+            input(type="hidden" name="pagenumber" id="pagenumber" value=1)
+            .col-5
+              label(for="date_de_debut") Date de début :
+              input(type="date" name="date_de_debut" id="date_de_debut" placeholder=)
+            .col-5
+              label(for="date_de_fin") Date de fin : 
+              input(type="date" name="date_de_fin" id="date_de_fin")
+            .col-2
+              button(type="submit" class="btn btn-info")
+                i(class="far fa-check-circle")
+
+
+      div(class="navbar-pagination")
+        <nav aria-label="Page navigation example">
+          ul(class="pagination")
+            li(class="page-item")
+              a(class="page-link" href="/apnotpan/api/page="+ previous +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin) Previous
+            while (total_pages>= val_moins_3 && val_moins_3 <= val_plus_3)
+              input(type="hidden" value=total_pages+" "+ val_moins_3 + " " + totalpage_plus_3)
+              if (val_moins_3 == getpage)
+                li(class="page-item active" aria-current="page")
+                  span(class="page-link")= getpage
+                    span(class="sr-only")(current)
+                      span(type="hidden")= val_moins_3
+              if (getpage != val_moins_3)
+                li(class="page-item")
+                  a(class="page-link" href="/apnotpan/api/page="+ val_moins_3 +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin)= val_moins_3
+                    //- if (val_moins_3 != total_pages && getpage != val_moins_3)
+              if (getpage == total_pages)
+                span(type="hidden" value= val_moins_3)
+              span(type="hidden" value= val_moins_3++)
+              
+            li(class="page-item")
+              a(class="page-link" href="/apnotpan/api/page="+ next +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin) Next 
+
+
+      if (movies)
+        div(class="card-deck d-flex col-12")
+          each obj in movies
+            div(class="col-md-6 col-lg-4 mt-3")
+              div(class="card mb-3")
+                .row
+                  div(class="col-md-5")
+                    //- if (obj.poster_path != null)
+                    img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path class="card-img" alt="Card image cap")
+                  //- else  
+                  //-   img(src="https://lh3.googleusercontent.com/proxy/STyptWkYD2Y3BpNRD2ND1MqKSBqyjhwia7WRzF3ojtMX0fNpQPkesX3XidmkUqrRAfQ531NvONp7MsdVdSf6TQsXjzFfZPk9OHU4Jo2bH9d_MOGBL6i6_0moWihmCb1lsDgQdpLr" class="card-img" alt="Card image cap")
+                  div(class="col-md-7 adjustement")
+                    h5(class="card-title")= obj.title
+                    div(class="card-body")
+                      p(class="card-text scroller")= obj.overview
+                    div(class="card-footer")
+                      small(class="text-muted")= "Date de sortie : " + obj.release_date
+                      button(type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_"+obj.id)
+                        i(class="far fa-arrow-alt-circle-right")
+
+          
+            div(class="modal fade" id="modal_"+obj.id tabindex="-1" role="dialog" aria-labelledby=obj.title aria-hidden="true")
+              div(class="modal-dialog modal-dialog-centered modal-xl" role="document")
+                div(class="modal-content")
+                  div(class="modal-header")
+                    h5(class="modal-title" id=obj.title)= obj.title
+                    button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                      span(aria-hidden="true") ❌
+                  div(class="modal-body")
+                    img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path)
+                    p= obj.overview
+                    h2 Commentaires
+                  div(class="modal-footer")
+                    p= "Date de sortie : " + obj.release_date
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                    button(type="button" class="btn btn-primary") Save changes
+          
+              
+        

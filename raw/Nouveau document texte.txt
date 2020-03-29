@@ -1,0 +1,12 @@
+tab avec foreach, passage à chaque boucle : afficher l'element
+
+
+
+A chaque clique sur le bouton "+" (Foreach) 
+
+ => Ajoute une compétence à la div (div nommé "competence-parent", competence est une autre div nommé "competence-child")
+
+   => "competence-child" doit contenir :
+	-text
+	-btn (div, button, icon)
+	-(fichier image, pour plus tard)

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+
+  article(id='top' class='wrapper style1')
+    div.container
+      div.row
+        div(class='col-4 col-5-large col-12-medium' id="div-img")
+          img(src='/images/movie.png' alt='imageAcceuil')
+        div(class='col-8 col-7-large col-12-medium')
+          header
+            h1 Apnotpan / Api
+            h2= "Votre film est: " +movie

@@ -1,0 +1,154 @@
+tr img {
+  width: 50px;
+  height: 50px;
+}
+
+body {
+  min-width:1000px;
+}
+
+.imageadapte {
+  display: block;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(.25rem - 1px);
+}
+
+.card {
+  display: block;
+  margin: auto;
+  box-shadow: 5px 5px 2px 1px rgba(115, 115, 245, 0.2);
+  height: auto;
+  width: 95%;
+  flex-wrap: wrap;
+}
+
+.card-img:hover {
+  cursor: pointer;
+}
+
+.card-deck{
+  margin: auto!important;
+}
+.card-title {
+  padding-top: 10px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  padding-right: 10px;
+}
+
+.card-body {
+  padding: 1em!important;
+}
+#top {
+  padding: 4em;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#top p{
+  font-size: 0.75em;
+  line-height: 1.75em;
+}
+
+.scroller {
+  overflow-y: auto!important;
+  scrollbar-width: thin!important;
+  width: auto;
+  height: auto;
+}
+
+.card-text {
+  height: 160px;
+  margin-top: 0px;
+  width: auto;
+  margin-bottom: auto;
+  text-align: center;
+  text-align: justify;
+}
+
+p.card-text {
+  font-size: 0.75em!important;
+  line-height: 1.30em!important;
+  word-spacing: normal;
+  padding-right: 8px;
+}
+
+.card-footer {
+  border-radius: 25px!important;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  padding-right: 0;
+  width: 88%;
+  font-size: 12px;
+}
+
+.adjustement {
+  padding-left : 3px;
+}
+
+.modal-body img{
+  height: 300px;
+  width: auto;
+  padding-right: 20px;
+  float: left;
+  display: block;
+}
+
+.modal-body p{
+  font-size: 18px!important;
+}
+
+.modal-footer p{
+  margin-right: auto;
+  font-size: 20px!important;
+}
+
+h5.modal-title {
+  font-size: 35px;
+}
+
+.center {
+  text-align: center;
+}
+
+button.btn-info {
+  margin-left: 15px;
+  border-radius: 50%;
+}
+
+button.close {
+  padding: 20px;
+}
+
+.navbar-pagination ul li{
+  padding-left: 0;
+}
+
+.navbar-pagination{
+  margin: auto;
+  height: auto;
+  width: fit-content;
+
+}
+
+div.form-content {
+  margin: auto;
+  height: auto;
+  width: 600px;
+}
+
+.form-content>div{
+  display: inline-block;
+}
+
+div.date-periode{
+  margin-bottom: 20px;
+}
+

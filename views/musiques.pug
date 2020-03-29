@@ -1,0 +1,44 @@
+extends layout
+
+block content
+
+    title=title
+    article(id='top' class='wrapper style2')
+        div.container
+            header
+                h2
+                    img(src='/images/music.png' width='60' lenght='60' alt='imgmusicicon')
+                    span Liste des musiques
+                ul.container
+                    if (musiqueslist)
+                        table.default
+                            tr
+                                th Nom du titre
+                                th Auteur
+                                th Genre
+
+                            each obj in musiqueslist
+                                tr
+                                    td
+                                        a(href='/musiques/player/'+obj.nom)= obj.nom
+                                    td= obj.auteur
+                                    td= obj.genre
+                    else
+                        h4(style='color: red;') Pas de musiques pour l'instant dans la bibliothèque...
+                span Nombre de musiques : #{getTotal} | Genre : #{sommes}
+                
+
+
+            div.row
+                div.col-12
+                    form(name='addmusic' method='post' action='../musiques/upload' enctype='multipart/form-data')
+                        div(class='row gtr-uniform')
+                            div(class='col-6 col-12')
+                                input(type='file' name='upload' id='upload' accept=".mp3")
+                            div(class='col-6')
+                                input(type="text", name='auteur' id='auteur' placeholder='Auteur')
+                                input(type="text", name='genre' id='genre' placeholder='Genre')
+                        div(class='col-12')
+                            ul(class='actions')
+                                li
+                                    input(type='submit' value='Upload du fichier' class='primary')

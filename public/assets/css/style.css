@@ -131,11 +131,14 @@ button.close {
   padding-left: 0;
 }
 
+ul.pagination{
+  margin-bottom: 0;
+}
+
 .navbar-pagination{
   margin: auto;
   height: auto;
   width: fit-content;
-
 }
 
 div.form-content {
@@ -152,3 +155,11 @@ div.date-periode{
   margin-bottom: 20px;
 }
 
+p.affichageTitre{
+  font-size: 10px;
+  text-align: center;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+}

@@ -28,7 +28,7 @@ block content
 
 
       div(class="navbar-pagination")
-        <nav aria-label="Page navigation example">
+        nav(aria-label="Page navigation example")
           ul(class="pagination")
             li(class="page-item")
               a(class="page-link" href="/apnotpan/api/page="+ previous +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin) Previous
@@ -49,6 +49,7 @@ block content
               
             li(class="page-item")
               a(class="page-link" href="/apnotpan/api/page="+ next +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin) Next 
+          p(class="affichageTitre")= "Nombre de pages : "+total_pages
 
 
       if (movies)

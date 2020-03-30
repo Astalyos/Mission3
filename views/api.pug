@@ -49,6 +49,9 @@ block content
               
             li(class="page-item")
               a(class="page-link" href="/apnotpan/api/page="+ next +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin) Next 
+          p(class="affichageDate")
+            span(class="affichageDateDebut")= dateDebut
+            span(class="affichageDateFin")= dateFin
           p(class="affichageTitre")= "Nombre de pages : "+total_pages
 
 
@@ -60,7 +63,10 @@ block content
                 .row
                   div(class="col-md-5")
                     //- if (obj.poster_path != null)
-                    img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path class="card-img" alt="Card image cap")
+                    if (obj.poster_path == null)
+                      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' class="card-img" alt="Card image cap")
+                    if (obj.poster_path != null)
+                      img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path class="card-img" alt="Card image cap")
                   //- else  
                   //-   img(src="https://lh3.googleusercontent.com/proxy/STyptWkYD2Y3BpNRD2ND1MqKSBqyjhwia7WRzF3ojtMX0fNpQPkesX3XidmkUqrRAfQ531NvONp7MsdVdSf6TQsXjzFfZPk9OHU4Jo2bH9d_MOGBL6i6_0moWihmCb1lsDgQdpLr" class="card-img" alt="Card image cap")
                   div(class="col-md-7 adjustement")

@@ -1,0 +1,35 @@
+extends layout
+
+block content
+
+    article(id='top' class='wrapper style2')
+            div.container         
+                div.row
+                    div.col-6
+                        h2 Se connecter
+                        form(method='post' action='../connection/login' enctype='multipart/form-data')
+                            div(class='row gtr-uniform')
+                                div(class='col-6')
+                                    input(type="text", name='login' id='login' placeholder='Login')
+                                    input(type="password", name='password' id='password' placeholder='Password')
+                            div(class='col-12')
+                                ul(class='actions')
+                                    li
+                                        input(type='submit' value='Se connecter' class='primary')
+
+                    .col-6
+                        h2 S'inscrire
+                        form(method='post' action='../connection/register' enctype='multipart/form-data')
+                            div(class='row gtr-uniform')
+                                div(class='col-6')
+                                    input(type="text", name='registerLogin' id='registerLogin' placeholder='Login')
+                                    input(type="password", name='registerPassword' id='registerPassword' placeholder='Password')
+                                    input(type="password", name='confirmRegisterPassword' id='confirmRegisterPassword' placeholder='Confirm Password')
+                            div(class='col-12')
+                                ul(class='actions')
+                                    li
+                                        input(type='submit' value='S\'enregistrer' class='primary')
+                if (isConnected)
+                    form(method='post' action='../connection/deconnexion' enctype='multipart/form-data')
+                        input(type='submit' value='Se deconnecter' class='primary')
+

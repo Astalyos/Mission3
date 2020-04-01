@@ -191,3 +191,8 @@ span.affichageDateFin{
   font-weight: bold;
   padding-left: 20px;
 }
+
+li.connect{
+  float: right;
+  padding-top: 7px;
+}

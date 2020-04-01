@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+var session = require('express-session');
 var stylus = require('stylus');
 var fileUpload = require('express-fileupload');
 var mongo = require('mongodb');
@@ -16,6 +18,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var musiquesRouter = require('./routes/musiques')
 var apnotpanRouter = require('./routes/apnotpan');
+var connectionRouter = require('./routes/connection');
 var apiRouter = require('./api/rest');
 
 
@@ -34,6 +37,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: 'ElPsyKongroo',
+  resave: false,
+  saveUninitialized: true,
+}));
 app.use(stylus.middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/raw', express.static(path.join(__dirname, 'raw')));
@@ -41,6 +49,7 @@ app.use('/raw', express.static(path.join(__dirname, 'raw')));
 
 // Configuration pour le modèle utilisateur
 var Account = require('./models/account');
+
 // Configuration de mongoose
 mongoose.connect('mongodb://localhost/apnotpan', {
   useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true
@@ -67,6 +76,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/musiques', musiquesRouter);
 app.use('/apnotpan', apnotpanRouter);
+app.use('/connection', connectionRouter);
 
 
 // catch 404 and forward to error handler

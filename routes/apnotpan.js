@@ -9,22 +9,9 @@ router.get('/', function (req, res, next) {
 
 router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async function (req, res, next) {
     var getpage = parseInt(req.params.pages) || 1;
-    var dateDebut = (req.params.dateDebut) || "2020-03-01";
-    var dateFin = (req.params.dateFin) || "2020-03-31";
-    var getMovie = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=2b56942ec7b5444caeb3c0a9bdac8f91&language=fr-FR&sort_by=popularity.desc&page=' + getpage + '&primary_release_date.gte=' + dateDebut + '&primary_release_date.lte=' + dateFin)
-    //console.log(getMovie.data);
-    var getTotalPages = parseInt(getMovie.data.total_pages);
-    var FilmData = getMovie.data.results;
-    var val_moins_3 = parseInt(getpage) - 3;
-    var val_plus_3 = parseInt(getpage) + 3;
-    var totalpage_plus_3 = getTotalPages + 3;
-    var next = parseInt(getpage) + 1;
-    var previous = parseInt(getpage) - 1;
-    var getGenre = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=67c91e6c478de75dad308e127da768bf&language=fr')
-    var toutLesGenres = getGenre.data.genres;
 
     //Recupere la date d'aujourd'hui
-    /* PAS FONCTIONNELLE
+    /* PAS FONCTIONNELLE */ 
     var fulldate = new Date();
     let years = fulldate.getFullYear();
     let month = fulldate.getMonth();
@@ -39,7 +26,23 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     console.log(fulldate);
     console.log(dateFin)
 
-    */
+    var dateDebut = (req.params.dateDebut) || "2020-03-01";
+    var dateFin = (req.params.dateFin) || "2020-03-31";
+    var getMovie = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=2b56942ec7b5444caeb3c0a9bdac8f91&language=fr-FR&sort_by=popularity.desc&page=' + getpage + '&primary_release_date.gte=' + dateDebut + '&primary_release_date.lte=' + dateFin)
+    //console.log(getMovie.data);
+    var getTotalPages = parseInt(getMovie.data.total_pages);
+    var FilmData = getMovie.data.results;
+    var val_moins_3 = parseInt(getpage) - 3;
+    var val_plus_3 = parseInt(getpage) + 3;
+    var totalpage_plus_3 = getTotalPages + 3;
+    var next = parseInt(getpage) + 1;
+    var previous = parseInt(getpage) - 1;
+    var getGenre = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=67c91e6c478de75dad308e127da768bf&language=fr')
+    var toutLesGenres = getGenre.data.genres;
+
+    
+    
+
 
     // Eviter que la navbar de page aille dans les négatifs
     // Cas ou il y à moins de 3 pages en results

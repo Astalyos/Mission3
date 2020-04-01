@@ -33,7 +33,6 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     let years = date.getFullYear();
     let month = date.getMonth();
     let numjour = date.getDate();
-    
     //Permet de rajouter 1 au moins car recu avec -1 de base 
     month = parseInt(month)+1;
     let monthf = month+1;
@@ -48,6 +47,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
 
     var dateDebut = (req.params.dateDebut) || dateD;
     var dateFin = (req.params.dateFin) || dateF;
+
     var getMovie = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=2b56942ec7b5444caeb3c0a9bdac8f91&language=fr-FR&sort_by=popularity.desc&page=' + getpage + '&primary_release_date.gte=' + dateDebut + '&primary_release_date.lte=' + dateFin)
 
     var getTotalPages = parseInt(getMovie.data.total_pages);

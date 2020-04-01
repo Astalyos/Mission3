@@ -196,3 +196,8 @@ li.connect{
   float: right;
   padding-top: 7px;
 }
+
+p.genre{
+  display: inline-block;
+  padding: 5px;
+}

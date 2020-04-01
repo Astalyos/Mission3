@@ -12,16 +12,16 @@ router.get('/', function (req, res, next) {
         // connected: getConnected,
         // userInfo: getUserInfo,
     });
-    
+
 });
 
 router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async function (req, res, next) {
-    var isConnected ="";
+    var isConnected = "";
     console.log(req.session.user);
-    if(!req.session.user){
+    if (!req.session.user) {
         isConnected = "Not connected"
-    }else{
-        isConnected = "Connected : "+req.session.name+" id: "+ req.session.user;
+    } else {
+        isConnected = "Connected : " + req.session.name + " id: " + req.session.user;
     }
     // var getUserInfo = req.body.userInfo;
     // var getConnected = req.body.connected;
@@ -34,17 +34,17 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     let month = date.getMonth();
     let numjour = date.getDate();
     //Permet de rajouter 1 au moins car recu avec -1 de base 
-    month = parseInt(month)+1;
-    let monthf = month+1;
-    if (month <10){
-        month= "0"+month;
+    month = parseInt(month) + 1;
+    let monthf = month + 1;
+    if (month < 10) {
+        month = "0" + month;
     }
-    if (monthf <10){
-        monthf= "0"+monthf;
+    if (monthf < 10) {
+        monthf = "0" + monthf;
     }
-    var dateD = years+"-"+month+"-"+numjour
-    var dateF = years+"-"+monthf+"-"+numjour
-    
+    var dateD = years + "-" + month + "-" + numjour
+    var dateF = years + "-" + monthf + "-" + numjour
+
     var dateDebut = (req.params.dateDebut) || dateD;
     var dateFin = (req.params.dateFin) || dateF;
     
@@ -120,26 +120,26 @@ router.post('/api/getdate', async function (req, res, next) {
     var dateFin = req.body.date_de_fin ;
 
     if (!dateDebut || !dateFin) {
+        //Recupere la date d'aujourd'hui
         var date = new Date();
         let years = date.getFullYear();
         let month = date.getMonth();
         let numjour = date.getDate();
-
         //Permet de rajouter 1 au moins car recu avec -1 de base 
-        month = parseInt(month)+1;
-        let monthf = month+1;
-        if (numjour<10){
-            numjour="0"+numjour;
+        month = parseInt(month) + 1;
+        let monthf = month + 1;
+        if (month < 10) {
+            month = "0" + month;
         }
-        if (month <10){
-            month= "0"+month;
+        if (monthf < 10) {
+            monthf = "0" + monthf;
         }
-        if (monthf <10){
-            monthf= "0"+monthf;
+        if (numjour < 10){
+            numjour = "0"+ numjour
         }
-        var dateD = years+"-"+month+"-"+numjour
-        var dateF = years+"-"+monthf+"-"+numjour
-        
+        var dateD = years + "-" + month + "-" + numjour
+        var dateF = years + "-" + monthf + "-" + numjour
+
         dateDebut = dateD;
         dateFin = dateF;
     }

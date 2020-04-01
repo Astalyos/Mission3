@@ -88,14 +88,17 @@ block content
                     button(type="button" class="close" data-dismiss="modal" aria-label="Close")
                       span(aria-hidden="true") ❌
                   div(class="modal-body")
-                    img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path)
+                    if (obj.poster_path == null)
+                      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' alt="img poster")
+                    if (obj.poster_path != null)
+                      img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path alt="img poster")
                     h4 Description 
                     p= obj.overview
                     h4 Genre
                     for arraygenreFilm in obj.genre_ids
                       for allGenre in genre
                         if allGenre.id == arraygenreFilm
-                          p= allGenre.name
+                          p(class="genre")= allGenre.name
                     h2 Commentaires
                   div(class="modal-footer")
                     p= "Date de sortie : " + obj.release_date

@@ -89,7 +89,13 @@ block content
                       span(aria-hidden="true") ❌
                   div(class="modal-body")
                     img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path)
+                    h4 Description 
                     p= obj.overview
+                    h4 Genre
+                    for arraygenreFilm in obj.genre_ids
+                      for allGenre in genre
+                        if allGenre.id == arraygenreFilm
+                          p= allGenre.name
                     h2 Commentaires
                   div(class="modal-footer")
                     p= "Date de sortie : " + obj.release_date

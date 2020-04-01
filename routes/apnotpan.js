@@ -11,23 +11,26 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     var getpage = parseInt(req.params.pages) || 1;
 
     //Recupere la date d'aujourd'hui
-    /* PAS FONCTIONNELLE */ 
-    var fulldate = new Date();
-    let years = fulldate.getFullYear();
-    let month = fulldate.getMonth();
-    let date = fulldate.getDate();
-    let dateF = parseInt(fulldate.getDate())+31;
+    var date = new Date();
+    let years = date.getFullYear();
+    let month = date.getMonth();
+    let numjour = date.getDate();
+    
+    //Permet de rajouter 1 au moins car recu avec -1 de base 
     month = parseInt(month)+1;
+    let monthf = month+1;
     if (month <10){
         month= "0"+month;
     }
-    var dateDebut = years+"-"+month+"-"+date
-    var dateFin = years+"-"+month+"-"+dateF
-    console.log(fulldate);
-    console.log(dateFin)
+    if (monthf <10){
+        monthf= "0"+monthf;
+    }
+    var dateD = years+"-"+month+"-"+numjour
+    var dateF = years+"-"+monthf+"-"+numjour
 
-    var dateDebut = (req.params.dateDebut) || "2020-03-01";
-    var dateFin = (req.params.dateFin) || "2020-03-31";
+
+    var dateDebut = (req.params.dateDebut) || dateD;
+    var dateFin = (req.params.dateFin) || dateF;
     var getMovie = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=2b56942ec7b5444caeb3c0a9bdac8f91&language=fr-FR&sort_by=popularity.desc&page=' + getpage + '&primary_release_date.gte=' + dateDebut + '&primary_release_date.lte=' + dateFin)
     //console.log(getMovie.data);
     var getTotalPages = parseInt(getMovie.data.total_pages);

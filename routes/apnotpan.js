@@ -27,7 +27,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     // var getConnected = req.body.connected;
     // console.log(getUserInfo, getConnected);
     var getpage = parseInt(req.params.pages) || 1;
-
+    
     //Recupere la date d'aujourd'hui
     var date = new Date();
     let years = date.getFullYear();
@@ -47,9 +47,9 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
 
     var dateDebut = (req.params.dateDebut) || dateD;
     var dateFin = (req.params.dateFin) || dateF;
-
+    
     var getMovie = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=2b56942ec7b5444caeb3c0a9bdac8f91&language=fr-FR&sort_by=popularity.desc&page=' + getpage + '&primary_release_date.gte=' + dateDebut + '&primary_release_date.lte=' + dateFin)
-
+    
     var getTotalPages = parseInt(getMovie.data.total_pages);
     var FilmData = getMovie.data.results;
     var val_moins_3 = parseInt(getpage) - 3;
@@ -59,7 +59,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     var previous = parseInt(getpage) - 1;
     var getGenre = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=67c91e6c478de75dad308e127da768bf&language=fr')
     var toutLesGenres = getGenre.data.genres;
-
+    
     // Eviter que la navbar de page aille dans les négatifs
     // Cas ou il y à moins de 3 pages en results
     if (val_moins_3 <= 0) {
@@ -69,7 +69,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
         }
         val_plus_3 = 7;
     }
-
+    
     // Eviter que la navbar de page aille au dessus de la taille max et descende dans les négatifs
     // Cas ou il y a plus de 3 pages
     if (val_plus_3 > getTotalPages) {
@@ -79,24 +79,24 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
         }
         val_plus_3 = getTotalPages;
     }
-
-
+    
+    
     if (getpage == 1) {
         val_moins_3 = 1;
         val_plus_3 = getpage + 6;
     }
-
-
+    
+    
     // Bouton next de la navbar page ne doit pas être supérieur au max disponible
     if (next >= getTotalPages) {
         next = getTotalPages;
     }
-
+    
     // Bouton previous de la navbar ne doit pas aller en dessous de 0
     if (previous <= 0) {
         previous = 1;
     }
-
+    
     // console.log(val_moins_3, val_plus_3);
     res.render('api', {
         title: 'Apnotpan',
@@ -117,8 +117,8 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
 
 router.post('/api/getdate', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
-    var dateFin = req.body.date_de_fin;
-    var getpage = req.body.pagenumber;
+    var dateFin = req.body.date_de_fin ;
+
     if (!dateDebut || !dateFin) {
         //Recupere la date d'aujourd'hui
         var date = new Date();
@@ -156,15 +156,15 @@ router.post('/api/research', async function (req, res, next) {
 
 router.get('/api/research/:movie', async function (req, res, next) {
     var movie = req.params.movie;
-
+    
     // var getMovie = () => {
     //     await axios.get('https://api.themoviedb.org/3/movie/550?api_key=2b56942ec7b5444caeb3c0a9bdac8f91')
     //         .then(response => { this.results = response.data.results });
     //     console.log(response);
     // };
-
+    
     getMovie();
-
+    
     res.render('movie', {
         movie: movie,
     });

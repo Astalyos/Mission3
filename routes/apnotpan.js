@@ -104,7 +104,7 @@ router.post('/api/getdate', async function (req, res, next) {
         dateDebut = getJour("debut");
         dateFin = getJour("fin");
     }
-    console.log(dateDebut, dateFin);
+    //console.log(dateDebut, dateFin);
     res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin)
 })
 
@@ -117,13 +117,11 @@ router.post('/api/research', async function (req, res, next) {
 
 router.get('/api/research/:movie', async function (req, res, next) {
     var movie = req.params.movie;
-    
     // var getMovie = () => {
     //     await axios.get('https://api.themoviedb.org/3/movie/550?api_key=2b56942ec7b5444caeb3c0a9bdac8f91')
     //         .then(response => { this.results = response.data.results });
     //     console.log(response);
     // };
-    
     getMovie();
     
     res.render('movie', {

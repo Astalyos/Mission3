@@ -8,23 +8,26 @@ block content
                 h2
                     img(src='/images/musicalbox.png' width='64' lenght='64' alt='')
                     span Liste des utilisateurs
-                    ul.container
-                    if (users)
-                        table.default
-                            tr
-                                th Login
-                                th Password
-                                th Role
-                                th ID
 
-                            if (connection)
-                                each obj in users
-                                    tr
-                                        td= obj.login
-                                        td= obj.passe
-                                        td= obj.role
-                                        td= obj._id
-                            else 
-                                h4(style='color: red;') Admin not connected :/
-                    else
-                        h4(style='color: red;') Pas d'utilisateurs pour le moment...
+        div.container
+            if (users)
+                table.default.usertab
+                    tr
+                        th Email
+                        th Pseudo
+                        th Password
+                        th Role
+                        th ID
+
+                    if (connection)
+                        each obj in users
+                            tr
+                                td= obj.email
+                                td= obj.pseudo
+                                td= obj.passe
+                                td= obj.role
+                                td= obj._id
+                    else 
+                        h4(style='color: red;') Admin not connected :/
+            else
+                h4(style='color: red;') Pas d'utilisateurs pour le moment...

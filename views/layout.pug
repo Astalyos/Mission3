@@ -12,9 +12,9 @@ html(lang='fr')
 body.is-preload
 
   nav#nav
-    ul.container-fluid
-      li
-        span Apnotpan
+    ul.container-fluid#mainbar
+      li(class="acceuil")
+        a(hred='/apnotpan') Apnotpan
       li
         a(href='/') Home
       li
@@ -24,11 +24,15 @@ body.is-preload
       li
         a(href='/musiques') Musiques
       li(class="connect")
+        if (session.uid)
+          a(href='/connection/deconnexion') Logout
+        if (!session.uid)
+          a(href='/connection') Se connecter
         //-   a(href='/connection/deconnexion') Logout
         //-   input(type="hidden" id="userInfo" value=userInfo)
         //-   input(type="hidden" id="connection" value=connected)
         //- if (!connected)
-        a(href='/connection') Se connecter
+        //- a(href='/connection') Se connecter
 
       
       

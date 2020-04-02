@@ -19,10 +19,10 @@ router.get('/admin', async function (req, res, next) {
 
 // Affichage de la liste
 router.get('/', async function (req, res, next) {
-  console.log(req.session.user);
+  console.log(req.session.id);
   var db = req.db;
   var isConnected = false;
-  await Account.findOne({ "login": "Admin" },
+  await Account.findOne({ "email": "admin@admin.fr" },
     function (err, result) {
       if (err) {
         console.log("pas ok");
@@ -30,7 +30,8 @@ router.get('/', async function (req, res, next) {
         if (!result) {
           // Creation d’un utilisateur
           var admin = new Account({
-            login: 'Admin',
+            pseudo: "Admin",
+            email: 'admin@admin.fr',
             passe: 'slam',
             role: 'Administrateur'
           });
@@ -42,7 +43,7 @@ router.get('/', async function (req, res, next) {
 
   var collection = db.get('accounts');
 
-  if (req.session.user) {
+  if (req.session.uid) {
     isConnected = true;
   }
   // var collectUsers = await collection.find({});
@@ -65,16 +66,17 @@ router.get('/', async function (req, res, next) {
 //Requete connection
 router.post('/login', async function (req, res, next) {
   var db = req.db;
-  var login = req.body.login;
+  var email = req.body.email;
   var password = req.body.password;
-  var dbRequest = await db.get('accounts').find({ login: login });
-  var getlogin = dbRequest[0].login;
+  var dbRequest = await db.get('accounts').find({ email: email });
+  var getPseudo = dbRequest[0].pseudo;
+  var getemail = dbRequest[0].email;
   var getId = dbRequest[0]._id;
   var getpassword = dbRequest[0].passe;
   // console.log(dbRequest);
-  console.log("user : " + getlogin, "  password : " + getpassword);
+  console.log("email : " + getemail, "  password : " + getpassword, "  pseudo : " + getPseudo , "  id : " + getId);
 
-  await Account.findOne({ "login": login },
+  await Account.findOne({ "email": email },
     function (err, result) {
       if (err) {
         console.log("pas ok");
@@ -82,13 +84,11 @@ router.post('/login', async function (req, res, next) {
         if (result) {
           // Si on à un resultat (donc un utilisateur existant)
           if (password === getpassword) {
-            var userInfoJson = {
-              userId: login,
-            };
-            req.session.user = result._id;
-            req.session.name = result.login;
+            req.session.uid = result._id;
+            req.session.email = result.email;
+            req.session.pseudo = result.pseudo;
             console.log("Connection Réussi !")
-            console.log(req.session.user);
+            console.log(req.session.email, req.session.uid, req.session.pseudo);
             res.redirect('/apnotpan/api/page=1&dateDebut=2020-03-01&dateFin=2020-03-31');
           } else {
             console.log("Mot de passe incorrect...");
@@ -122,13 +122,14 @@ router.post('/login', async function (req, res, next) {
 
 router.post('/register', async function (req, res, next) {
   var db = req.db;
-  var registerLogin = req.body.registerLogin;
+  var registerEmail = req.body.registerEmail;
   var registerPassword = req.body.registerPassword;
+  var registerPseudo = req.body.registerPseudo;
   var verifPassword = req.body.confirmRegisterPassword;
-  var dbRequest = await db.get('accounts').find({ login: registerLogin });
+  var dbRequest = await db.get('accounts').find({ email: registerEmail });
 
   if (registerPassword === verifPassword) {
-    await Account.findOne({ "login": registerLogin },
+    await Account.findOne({ "email": registerEmail },
       function (err, result) {
         if (err) {
           console.log("pas ok");
@@ -136,12 +137,14 @@ router.post('/register', async function (req, res, next) {
           if (!result) {
             // Creation d’un utilisateur
             var newUser = new Account({
-              login: registerLogin,
+              pseudo: registerPseudo,
+              email: registerEmail,
               passe: registerPassword,
               role: 'defaultUser'
             });
+            console.log(newUser);
             // Saving it to the database.
-            newUser.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
+            newUser.save(function (err) { if (err) console.log('Erreur de sauvegarde !'+err) });
             console.log("Félicitation, vous êtes enregistré !");
           }
         }
@@ -155,16 +158,18 @@ router.post('/register', async function (req, res, next) {
   }
 
   // Finding user in DB
-  await Account.findOne({ "login": registerLogin },
+  await Account.findOne({ "email": registerEmail },
     function (err, result) {
       if (err) {
         console.log("pas ok");
       } else {
         if (result) {
           // Si on à un resultat (donc un utilisateur existant) 
-          req.session.user = result._id;
+          req.session.pseudo = result.pseudo;
+          req.session.email = result.email;
+          req.session.uid = result._id;
           console.log("Connection Réussi !")
-          console.log(req.session.user);
+          console.log(req.session.email, req.session.pseudo, req.session.uid);
           res.redirect('/apnotpan/api/page=1&dateDebut=2020-03-01&dateFin=2020-03-31');
         } else {
           console.log("something went wrong (connection.js ligne 161)")
@@ -195,9 +200,10 @@ router.post('/register', async function (req, res, next) {
 // }
 
 
-router.post('/deconnexion', async function (req, res, next) {
+router.get('/deconnexion', async function (req, res, next) {
+  console.log(req.session.uid); 
   req.session.destroy();
-  res.redirect('/connection');
+  return res.redirect('/connection');
 });
 
 

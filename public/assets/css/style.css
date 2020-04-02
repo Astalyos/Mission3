@@ -197,6 +197,21 @@ li.connect{
   padding-top: 7px;
 }
 
+li.acceuil{
+  float: left;
+  padding-top: 7px;
+}
+
+#mainbar{
+  padding-left: 15px!important;
+  padding-right: 15px!important;
+}
+
+.usertab{
+  padding: auto;
+  width: auto;
+}
+
 p.genre{
   display: inline-block;
   padding: 5px;

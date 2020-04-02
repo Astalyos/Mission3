@@ -65,6 +65,11 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(function(req,res,next){
+    res.locals.session = req.session;
+    next();
+});
+
 app.use(fileUpload({
   createParentPath: true,
   useTempFiles: true,
@@ -77,6 +82,7 @@ app.use('/users', usersRouter);
 app.use('/musiques', musiquesRouter);
 app.use('/apnotpan', apnotpanRouter);
 app.use('/connection', connectionRouter);
+
 
 
 // catch 404 and forward to error handler

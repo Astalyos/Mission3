@@ -3,6 +3,24 @@ var router = express.Router();
 var axios = require('axios');
 var session = require('express-session');
 
+function getJour(etat){
+    //Recupere la date d'aujourd'hui
+    var date = new Date();
+    let years = date.getFullYear();
+    let month = date.getMonth();
+    let numjour = date.getDate();
+    //Permet de rajouter 1 au moins car recu avec -1 de base 
+    month = parseInt(month) + 1;
+    if (etat == "fin"){
+        month = parseInt(month)+1;
+    }
+    if (month < 10) {
+        month = "0" + month;
+    }
+    date = years + "-" + month + "-" + numjour
+    return date
+}
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
     // var getUserInfo = req.body.userInfo;
@@ -31,17 +49,22 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     var dateDebut = (req.params.dateDebut) || getJour("debut");
     var dateFin = (req.params.dateFin) || getJour("fin");
     console.log(dateDebut+"   "+dateFin)
+
+    // Requete vers l'api TMDB
     var getMovie = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=2b56942ec7b5444caeb3c0a9bdac8f91&language=fr-FR&sort_by=popularity.desc&page=' + getpage + '&primary_release_date.gte=' + dateDebut + '&primary_release_date.lte=' + dateFin)
+    var getGenre = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=67c91e6c478de75dad308e127da768bf&language=fr')
     
+    //Variables qui stocke les infos de TMDB
     var getTotalPages = parseInt(getMovie.data.total_pages);
     var FilmData = getMovie.data.results;
+    var toutLesGenres = getGenre.data.genres;
+
     var val_moins_3 = parseInt(getpage) - 3;
     var val_plus_3 = parseInt(getpage) + 3;
     var totalpage_plus_3 = getTotalPages + 3;
     var next = parseInt(getpage) + 1;
     var previous = parseInt(getpage) - 1;
-    var getGenre = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=67c91e6c478de75dad308e127da768bf&language=fr')
-    var toutLesGenres = getGenre.data.genres;
+    
     
     // Eviter que la navbar de page aille dans les négatifs
     // Cas ou il y à moins de 3 pages en results
@@ -63,6 +86,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
         val_plus_3 = getTotalPages;
     }
     
+    //Si on se trouve sur la page 1 cela permet d'avoir les 7 pages d'afficher
     if (getpage == 1) {
         val_moins_3 = 1;
         val_plus_3 = getpage + 6;
@@ -95,7 +119,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     });
 });
 
-router.post('/api/getdate', async function (req, res, next) {
+router.get('/api/getdate', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
     var dateFin = req.body.date_de_fin ;
 
@@ -103,9 +127,10 @@ router.post('/api/getdate', async function (req, res, next) {
         // appel de la function pour recup la date 
         dateDebut = getJour("debut");
         dateFin = getJour("fin");
-    }
+    };
+    console.log("getdate SA PASSSE DANS LE ROUTER")
     //console.log(dateDebut, dateFin);
-    res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin)
+    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin);
 })
 
 
@@ -129,24 +154,5 @@ router.get('/api/research/:movie', async function (req, res, next) {
     });
 })
 
-function getJour(etat){
-    //Recupere la date d'aujourd'hui
-    var date = new Date();
-    let years = date.getFullYear();
-    let month = date.getMonth();
-    let numjour = date.getDate();
-    //Permet de rajouter 1 au moins car recu avec -1 de base 
-    month = parseInt(month) + 1;
-    if (etat == "fin"){
-        month = parseInt(month)+1;
-    }
-    if (month < 10) {
-        month = "0" + month;
-    }
-    if (monthf < 10) {
-        monthf = "0" + monthf;
-    }
-    date = years + "-" + month + "-" + numjour
-    return date
-}
+
 module.exports = router;

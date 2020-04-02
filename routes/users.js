@@ -5,8 +5,9 @@ var Account = require('../models/account');
 // Affichage de la liste
 router.get('/', async function (req, res, next) {
   var db = req.db;
+  var getAdminId = "";
   var succes = false;
-  await Account.findOne({ "login": "Admin" },
+  await Account.findOne({ "email": "admin@admin.fr" },
     function (err, result) {
       if (err) {
         console.log("pas ok");
@@ -14,28 +15,32 @@ router.get('/', async function (req, res, next) {
         if (!result) {
           // Creation d’un utilisateur
           var admin = new Account({
-            login: 'Admin',
+            pseudo: 'Admin',
+            email: 'admin@admin.fr',
             passe: 'slam',
             role: 'Administrateur'
           });
           // Saving it to the database.
           admin.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
         }
+        // si result
+        getAdminId = result._id;
+        console.log("uid admin : "+getAdminId, "req.session.uid : "+ req.session.uid);
       }
     }
   );
   var collection = db.get('accounts');
   var collectUsers = await collection.find({});
-  console.log(collectUsers)
+  console.log("liste bdd : " + collectUsers)
 
-  if (req.session.user === "5e7bc8222cb41b5348e44f2d") {
+  if (req.session.uid === ""+getAdminId) {
     succes = true;
   } else {
     succes = false;
   }
 
   res.render('users', {
-    title: 'MusicalBox',
+    title: 'Apnotpan',
     users: collectUsers,
     connection: succes
   });

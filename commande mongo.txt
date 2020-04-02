@@ -1,0 +1,7 @@
+mongod.exe –dbpath=.\data
+
+mongo
+
+npm start
+npm run
+npm nodemon

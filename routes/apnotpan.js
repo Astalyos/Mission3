@@ -135,10 +135,6 @@ router.post('/api/research', async function (req, res, next) {
     res.redirect('research/' + recup);
 })
 
-router.get('/api/prout', async function(req,res,next){
-    return res.redirect('/apnotpan/api/getdate');
-})
-
 router.get('/api/research/:movie', async function (req, res, next) {
     var movie = req.params.movie;
     

@@ -8,6 +8,8 @@ block content
                 h2
                     img(src='/images/musicalbox.png' width='64' lenght='64' alt='')
                     span Liste des utilisateurs
+                    if (!session.email)
+                        h5 Vous n'êtes pas connecté
 
         div.container
             if (users)

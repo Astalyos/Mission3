@@ -63,7 +63,6 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
         val_plus_3 = getTotalPages;
     }
     
-    
     if (getpage == 1) {
         val_moins_3 = 1;
         val_plus_3 = getpage + 6;
@@ -101,6 +100,7 @@ router.post('/api/getdate', async function (req, res, next) {
     var dateFin = req.body.date_de_fin ;
 
     if (!dateDebut || !dateFin) {
+        // appel de la function pour recup la date 
         dateDebut = getJour("debut");
         dateFin = getJour("fin");
     }

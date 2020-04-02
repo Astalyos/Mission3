@@ -90,7 +90,6 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
         val_plus_3: val_plus_3,
         dateDebut: dateDebut,
         dateFin: dateFin,
-        isConnected: isConnected,
         genre: toutLesGenres,
     });
 });

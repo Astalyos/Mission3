@@ -34,13 +34,13 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async function (req, res, next) {
-    var isConnected = "";
-    console.log(req.session.email);
-    if (!req.session.email) {
-        isConnected = "Not connected"
-    } else {
-        isConnected = "Connected : " + req.session.email + " id: " + req.session.uid;
-    }
+    // var isConnected = "";
+    console.log(req.session.email+" is connected");
+    // if (!req.session.email) {
+    //     isConnected = "Not connected"
+    // } else {
+    //     isConnected = "Connected : " + req.session.email + " id: " + req.session.uid;
+    // }
     // var getUserInfo = req.body.userInfo;
     // var getConnected = req.body.connected;
     var getpage = parseInt(req.params.pages) || 1;
@@ -114,7 +114,6 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
         val_plus_3: val_plus_3,
         dateDebut: dateDebut,
         dateFin: dateFin,
-        isConnected: isConnected,
         genre: toutLesGenres,
     });
 });
@@ -153,6 +152,5 @@ router.get('/api/research/:movie', async function (req, res, next) {
         movie: movie,
     });
 })
-
 
 module.exports = router;

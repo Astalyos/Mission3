@@ -27,7 +27,12 @@ block content
                                 td= obj.passe
                                 td= obj.role
                                 td= obj._id
-                    else 
-                        h4(style='color: red;') Admin not connected :/
+                    else if (session.email)
+                        tr
+                            td= session.email
+                            td= session.pseudo
+                            td= "Cripted"
+                            td= "DefaultUser"
+                            td= "Cripted"
             else
                 h4(style='color: red;') Pas d'utilisateurs pour le moment...

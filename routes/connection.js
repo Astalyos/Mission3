@@ -35,7 +35,7 @@ router.get('/', async function (req, res, next) {
             passe: 'slam',
             role: 'Administrateur'
           });
-          // Saving it to the database.
+          // L'enregistre dans la BDD.
           admin.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
         }
       }

@@ -147,6 +147,9 @@ function getJour(etat){
     if (monthf < 10) {
         monthf = "0" + monthf;
     }
+    if(numjour < 10){
+        numjour = "0"+numjour
+    }
     date = years + "-" + month + "-" + numjour
     return date
 }

@@ -16,13 +16,13 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async function (req, res, next) {
-    var isConnected = "";
-    console.log(req.session.email);
-    if (!req.session.email) {
-        isConnected = "Not connected"
-    } else {
-        isConnected = "Connected : " + req.session.email + " id: " + req.session.uid;
-    }
+    // var isConnected = "";
+    console.log(req.session.email+" is connected");
+    // if (!req.session.email) {
+    //     isConnected = "Not connected"
+    // } else {
+    //     isConnected = "Connected : " + req.session.email + " id: " + req.session.uid;
+    // }
     // var getUserInfo = req.body.userInfo;
     // var getConnected = req.body.connected;
     // console.log(getUserInfo, getConnected);

@@ -1,5 +1,15 @@
 mongod.exe –dbpath=.\data
 
+AVOIR UN DOSSIER DATA SITUER AVANT CE DOSIER MEME !
+par exemple :
+
+"c:/ceProjet"
+      |
+      |----data     <--- ce dosier est recquis, veuillez le creer
+      |----Mission3
+
+lancer le cmd depuis c:/ceProjet avec la commande ligne 1
+
 mongo
 
 npm start

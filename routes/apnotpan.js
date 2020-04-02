@@ -25,29 +25,12 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     }
     // var getUserInfo = req.body.userInfo;
     // var getConnected = req.body.connected;
-    // console.log(getUserInfo, getConnected);
     var getpage = parseInt(req.params.pages) || 1;
-    
-    //Recupere la date d'aujourd'hui
-    var date = new Date();
-    let years = date.getFullYear();
-    let month = date.getMonth();
-    let numjour = date.getDate();
-    //Permet de rajouter 1 au moins car recu avec -1 de base 
-    month = parseInt(month) + 1;
-    let monthf = month + 1;
-    if (month < 10) {
-        month = "0" + month;
-    }
-    if (monthf < 10) {
-        monthf = "0" + monthf;
-    }
-    var dateD = years + "-" + month + "-" + numjour
-    var dateF = years + "-" + monthf + "-" + numjour
 
-    var dateDebut = (req.params.dateDebut) || dateD;
-    var dateFin = (req.params.dateFin) || dateF;
-    
+    // appel de la function pour recup la date 
+    var dateDebut = (req.params.dateDebut) || getJour("debut");
+    var dateFin = (req.params.dateFin) || getJour("fin");
+    console.log(dateDebut+"   "+dateFin)
     var getMovie = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=2b56942ec7b5444caeb3c0a9bdac8f91&language=fr-FR&sort_by=popularity.desc&page=' + getpage + '&primary_release_date.gte=' + dateDebut + '&primary_release_date.lte=' + dateFin)
     
     var getTotalPages = parseInt(getMovie.data.total_pages);
@@ -96,8 +79,6 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     if (previous <= 0) {
         previous = 1;
     }
-    
-    // console.log(val_moins_3, val_plus_3);
     res.render('api', {
         title: 'Apnotpan',
         movies: FilmData,
@@ -120,28 +101,8 @@ router.post('/api/getdate', async function (req, res, next) {
     var dateFin = req.body.date_de_fin ;
 
     if (!dateDebut || !dateFin) {
-        //Recupere la date d'aujourd'hui
-        var date = new Date();
-        let years = date.getFullYear();
-        let month = date.getMonth();
-        let numjour = date.getDate();
-        //Permet de rajouter 1 au moins car recu avec -1 de base 
-        month = parseInt(month) + 1;
-        let monthf = month + 1;
-        if (month < 10) {
-            month = "0" + month;
-        }
-        if (monthf < 10) {
-            monthf = "0" + monthf;
-        }
-        if (numjour < 10){
-            numjour = "0"+ numjour
-        }
-        var dateD = years + "-" + month + "-" + numjour
-        var dateF = years + "-" + monthf + "-" + numjour
-
-        dateDebut = dateD;
-        dateFin = dateF;
+        dateDebut = getJour("debut");
+        dateFin = getJour("fin");
     }
     console.log(dateDebut, dateFin);
     res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin)
@@ -170,5 +131,24 @@ router.get('/api/research/:movie', async function (req, res, next) {
     });
 })
 
-
+function getJour(etat){
+    //Recupere la date d'aujourd'hui
+    var date = new Date();
+    let years = date.getFullYear();
+    let month = date.getMonth();
+    let numjour = date.getDate();
+    //Permet de rajouter 1 au moins car recu avec -1 de base 
+    month = parseInt(month) + 1;
+    if (etat == "fin"){
+        month = parseInt(month)+1;
+    }
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (monthf < 10) {
+        monthf = "0" + monthf;
+    }
+    date = years + "-" + month + "-" + numjour
+    return date
+}
 module.exports = router;

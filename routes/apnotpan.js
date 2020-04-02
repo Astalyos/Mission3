@@ -3,6 +3,27 @@ var router = express.Router();
 var axios = require('axios');
 var session = require('express-session');
 
+function getJour(etat){
+    //Recupere la date d'aujourd'hui
+    var date = new Date();
+    let years = date.getFullYear();
+    let month = date.getMonth();
+    let numjour = date.getDate();
+    //Permet de rajouter 1 au moins car recu avec -1 de base 
+    month = parseInt(month) + 1;
+    if (etat == "fin"){
+        month = parseInt(month)+1;
+    }
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if(numjour < 10){
+        numjour = "0"+numjour
+    }
+    date = years + "-" + month + "-" + numjour
+    return date
+};
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
     // var getUserInfo = req.body.userInfo;
@@ -114,6 +135,10 @@ router.post('/api/research', async function (req, res, next) {
     res.redirect('research/' + recup);
 })
 
+router.get('/api/prout', async function(req,res,next){
+    return res.redirect('/apnotpan/api/getdate');
+})
+
 router.get('/api/research/:movie', async function (req, res, next) {
     var movie = req.params.movie;
     
@@ -130,27 +155,5 @@ router.get('/api/research/:movie', async function (req, res, next) {
     });
 })
 
-function getJour(etat){
-    //Recupere la date d'aujourd'hui
-    var date = new Date();
-    let years = date.getFullYear();
-    let month = date.getMonth();
-    let numjour = date.getDate();
-    //Permet de rajouter 1 au moins car recu avec -1 de base 
-    month = parseInt(month) + 1;
-    if (etat == "fin"){
-        month = parseInt(month)+1;
-    }
-    if (month < 10) {
-        month = "0" + month;
-    }
-    if (monthf < 10) {
-        monthf = "0" + monthf;
-    }
-    if(numjour < 10){
-        numjour = "0"+numjour
-    }
-    date = years + "-" + month + "-" + numjour
-    return date
-}
+
 module.exports = router;

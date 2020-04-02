@@ -17,9 +17,12 @@ function getJour(etat){
     if (month < 10) {
         month = "0" + month;
     }
+    if(numjour < 10){
+        numjour = "0"+numjour
+    }
     date = years + "-" + month + "-" + numjour
     return date
-}
+};
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -137,6 +140,10 @@ router.post('/api/research', async function (req, res, next) {
     var recup = req.body.search;
     console.log(recup);
     res.redirect('research/' + recup);
+})
+
+router.get('/api/prout', async function(req,res,next){
+    return res.redirect('/apnotpan/api/getdate');
 })
 
 router.get('/api/research/:movie', async function (req, res, next) {

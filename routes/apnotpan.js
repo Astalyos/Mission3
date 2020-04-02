@@ -115,7 +115,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     });
 });
 
-router.post('/api/getdate', async function (req, res, next) {
+router.get('/api/getdate', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
     var dateFin = req.body.date_de_fin ;
 

@@ -63,7 +63,8 @@ router.get('/', async function (req, res, next) {
 //   }
 // }
 
-//Requete connection
+
+// Login
 router.post('/login', async function (req, res, next) {
   var db = req.db;
   var email = req.body.email;
@@ -89,7 +90,7 @@ router.post('/login', async function (req, res, next) {
             req.session.pseudo = result.pseudo;
             console.log("Connection Réussi !")
             console.log(req.session.email, req.session.uid, req.session.pseudo);
-            res.redirect('/apnotpan/api/page=1&dateDebut=2020-03-01&dateFin=2020-03-31');
+            res.redirect('/apnotpan/api/getdate');
           } else {
             console.log("Mot de passe incorrect...");
             res.redirect('/connection');
@@ -119,7 +120,7 @@ router.post('/login', async function (req, res, next) {
 //   res.status(500).send(err);
 // }
 
-
+// Register
 router.post('/register', async function (req, res, next) {
   var db = req.db;
   var registerEmail = req.body.registerEmail;
@@ -199,7 +200,7 @@ router.post('/register', async function (req, res, next) {
 //   res.status(500).send(err);
 // }
 
-
+// deconnexion
 router.get('/deconnexion', async function (req, res, next) {
   console.log(req.session.uid); 
   req.session.destroy();

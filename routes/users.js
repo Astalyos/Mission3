@@ -31,6 +31,7 @@ router.get('/', async function (req, res, next) {
   );
   var collection = db.get('accounts');
   var collectUsers = await collection.find({});
+  // var collectFilmUserCommented = await db.get('films').find({commentaire: [{ uid: req.session.uid }]});
   console.log("liste bdd : " + collectUsers)
 
   if (req.session.uid === ""+getAdminId) {

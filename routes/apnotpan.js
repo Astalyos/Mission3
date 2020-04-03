@@ -37,6 +37,7 @@ router.get('/', function (req, res, next) {
 
 });
 
+// main route pour l'api
 router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async function (req, res, next) {
     // var isConnected = "";
     console.log(req.session.email+" is connected");
@@ -139,7 +140,7 @@ router.get('/api/getdate', async function (req, res, next) {
     return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin);
 })
 
-// Pour le formulaire, si vide ça passe en post
+// Bouton validation formulaire pour la date
 router.post('/api/getdate1', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
     var dateFin = req.body.date_de_fin;
@@ -155,17 +156,19 @@ router.post('/api/getdate1', async function (req, res, next) {
     return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin);
 })
 
+
+// formulaire ajout commentaire
 router.post('/api/formulaireCommentaire', async function (req, res, next) {
     var db = req.db;
-    var getPseudo = req.body.Pseudo;
+    var getPseudo = req.session.pseudo;
     var getEmail = req.session.email;
     var getUid = req.session.uid;
-    var getNote = req.body.Note;
+    var getNote = parseInt(req.body.Note);
     var getComment = req.body.Commentaire;
-    var getIdFilm = req.body.filmIdToBdd; 
-    var getTitreFilm = req.body.titreFilm;  
+    var getIdFilm = ""+req.body.filmIdToBdd; 
+    var getTitreFilm = ""+req.body.titreFilm;  
 
-    var dbRequest = await db.get('film')
+    var dbRequest = await db.get('film');
 
     await Film.findOne({ "id": getIdFilm },
     function (err, result) {
@@ -173,28 +176,43 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
         console.log("pas ok");
       } else {
         if (!result) {
-          // Creation d’un film dans la bdd si non existant
+          // Creation d’un film dans la bdd si non existant à l'envoie d'un premier commentaire
           var film = new Film({
-            id: getIdFilm,
+            idFilm: getIdFilm,
             titre: getTitreFilm,
-            commentaires: [{}]
+            commentaires: [
+                {
+                    pseudo: getPseudo,
+                    email: getEmail,
+                    uid: getUid,
+                    note: getNote,
+                    commentaire: getComment
+                }
+            ]
           });
           // Enregistre dans la BDD.
+          console.log("idfilm : "+getIdFilm+" , titreFilm : "+getTitreFilm+" , get Note : "+ getNote + " , + getPseudo : "+getPseudo)
           film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
+        } else {
+            // Donc le film existe deja dans la bdd
+            console.log(result)
+            // db.get('film').find({id: getIdFilm})
         }
         // CEST PAS FINI ENCORE XD MAIS C UN BON DEBUT NAN ? 
       }
     });
-
+    res.redirect('/users')
     // .find({ email: email });
 })
 
+// pas utilisé encore
 router.post('/api/research', async function (req, res, next) {
     var recup = req.body.search;
     console.log(recup);
     res.redirect('research/' + recup);
 })
 
+// pas utilisé encore
 router.get('/api/research/:movie', async function (req, res, next) {
     var movie = req.params.movie;
     // var getMovie = () => {

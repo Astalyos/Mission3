@@ -26,7 +26,7 @@ block content
               button(type="submit" class="btn btn-info")
                 i(class="far fa-check-circle")
 
-
+      //Pagination
       div(class="navbar-pagination")
         nav(aria-label="Page navigation example")
           ul(class="pagination")
@@ -81,7 +81,7 @@ block content
                       button(type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_"+obj.id)
                         i(class="far fa-arrow-alt-circle-right")
 
-          
+            //Modal Film
             div(class="modal fade" id="modal_"+obj.id tabindex="-1" role="dialog" aria-labelledby=obj.title aria-hidden="true")
               div(class="modal-dialog modal-dialog-centered modal-xl" role="document")
                 div(class="modal-content")
@@ -110,15 +110,15 @@ block content
                         if (session.email)
                           div(class="addPost-section col-12")
                             form(action="formulaireCommentaire", method="post")
-                              input(type="hidden" id="filmIdToBdd" value=obj.id)
-                              input(type="hidden" id="titreFilm" value=obj.title)
+                              input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.id)
+                              input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
                               div.row
                                 .col-6.pseudo-section
                                   label(for="Pseudo") Votre pseudo :
-                                  input(class="form-control" type="text" name="Pseudo" id="Pseudo" disabled value=session.pseudo)
+                                  input(class="form-control" type="text" disabled="disabled" name="pseudo" id="pseudo" value=session.pseudo)
                                 .col-6.note-section
                                   label(class="mr-sm-2" for="Note") Note :
-                                  select(class="custom-select mr-sm-2" id="Note")
+                                  select(class="custom-select mr-sm-2" id="Note" name="Note")
                                     option(value="1") 1/5 Médiocre
                                     option(value="2") 2/5 Moyen
                                     option(value="3" selected) 3/5 Bon

@@ -8,16 +8,28 @@ function getJour(etat){
     //Recupere la date d'aujourd'hui
     var date = new Date();
     let years = date.getFullYear();
-    let month = date.getMonth();
+    let month = date.getMonth(); // 00 janvier 11 decembre 
     let numjour = date.getDate();
-    //Permet de rajouter 1 au moins car recu avec -1 de base 
-    month = parseInt(month) + 1;
-    if (etat == "fin"){
-        month = parseInt(month)+1;
+
+    month = parseInt(month) + 1; // 01 janvier // 12 decembre
+    
+    console.log("Année "+years+"mois "+ month +"Jour "+ numjour)
+
+    // avoir les film actuellement en salle 
+    if (etat == "debut"){
+        month = parseInt(month)-1;
+        if (month == 0){
+            years = parseInt(years)-1;
+            console.log("année "+years);
+            month = 12;
+            console.log("mois "+month)
+        }
     }
+    // rajouter un 0 
     if (month < 10) {
         month = "0" + month;
     }
+    // idem 
     if(numjour < 10){
         numjour = "0"+numjour
     }

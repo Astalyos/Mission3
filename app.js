@@ -52,10 +52,11 @@ var Account = require('./models/account');
 var Film = require('./models/film');
 
 // Configuration de mongoose
-mongoose.connect('mongodb://localhost/apnotpan', {
+mongoose.connect('mongodb://localhost/apnotpan', { // port de ma mongo 127.0.0.1 : 27017 
   useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true
 });
 var mdb = mongoose.connection;
+console.log(mdb)
 mdb.on('error', console.error.bind(console, 'connection error:'));
 mdb.once('open', function () {
   console.log("Connection Mongoose ok !");

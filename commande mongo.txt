@@ -1,4 +1,4 @@
-mongod.exe –dbpath=.\data
+mongod.exe -dbpath=.\data
 
 AVOIR UN DOSSIER DATA SITUER AVANT CE DOSIER MEME !
 par exemple :

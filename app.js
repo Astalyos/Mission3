@@ -49,6 +49,7 @@ app.use('/raw', express.static(path.join(__dirname, 'raw')));
 
 // Configuration pour le modèle utilisateur
 var Account = require('./models/account');
+var Film = require('./models/film');
 
 // Configuration de mongoose
 mongoose.connect('mongodb://localhost/apnotpan', {

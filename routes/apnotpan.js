@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var axios = require('axios');
 var session = require('express-session');
+var Film = require('../models/film');
 
 function getJour(etat){
     //Recupere la date d'aujourd'hui
@@ -121,9 +122,12 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     });
 });
 
+// pour la nav bar , permet une redirection sur la date du jour
 router.get('/api/getdate', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
-    var dateFin = req.body.date_de_fin ;
+    var dateFin = req.body.date_de_fin;
+
+    console.log("Date début : "+ dateDebut +" ,Date Fin : "+dateFin);
 
     if (!dateDebut || !dateFin) {
         // appel de la function pour recup la date 
@@ -135,6 +139,55 @@ router.get('/api/getdate', async function (req, res, next) {
     return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin);
 })
 
+// Pour le formulaire, si vide ça passe en post
+router.post('/api/getdate1', async function (req, res, next) {
+    var dateDebut = req.body.date_de_debut;
+    var dateFin = req.body.date_de_fin;
+
+    console.log("Date début : "+ dateDebut +" ,Date Fin : "+dateFin);
+
+    if (!dateDebut || !dateFin) {
+        // appel de la function pour recup la date 
+        dateDebut = getJour("debut");
+        dateFin = getJour("fin");
+    };
+    //console.log(dateDebut, dateFin);
+    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin);
+})
+
+router.post('/api/formulaireCommentaire', async function (req, res, next) {
+    var db = req.db;
+    var getPseudo = req.body.Pseudo;
+    var getEmail = req.session.email;
+    var getUid = req.session.uid;
+    var getNote = req.body.Note;
+    var getComment = req.body.Commentaire;
+    var getIdFilm = req.body.filmIdToBdd; 
+    var getTitreFilm = req.body.titreFilm;  
+
+    var dbRequest = await db.get('film')
+
+    await Film.findOne({ "id": getIdFilm },
+    function (err, result) {
+      if (err) {
+        console.log("pas ok");
+      } else {
+        if (!result) {
+          // Creation d’un utilisateur
+          var film = new Film({
+            id: getIdFilm,
+            titre: String,
+            commentaires: [{}]
+          });
+          // L'enregistre dans la BDD.
+          film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
+        }
+        // CEST PAS FINI ENCORE XD MAIS C UN BON DEBUT NAN ? 
+      }
+    });
+
+    // .find({ email: email });
+})
 
 router.post('/api/research', async function (req, res, next) {
     var recup = req.body.search;

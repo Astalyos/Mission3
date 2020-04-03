@@ -173,13 +173,13 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
         console.log("pas ok");
       } else {
         if (!result) {
-          // Creation d’un utilisateur
+          // Creation d’un film dans la bdd si non existant
           var film = new Film({
             id: getIdFilm,
-            titre: String,
+            titre: getTitreFilm,
             commentaires: [{}]
           });
-          // L'enregistre dans la BDD.
+          // Enregistre dans la BDD.
           film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
         }
         // CEST PAS FINI ENCORE XD MAIS C UN BON DEBUT NAN ? 

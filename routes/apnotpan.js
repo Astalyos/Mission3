@@ -234,12 +234,13 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
     var getComm = req.body.commentaireFilm;
     var getPoster = req.body.poster_Path;
     var getRelease_date = req.body.release_date;
+    var getGenre = req.body.genreIds;
 
-    console.log('getComm  '+ getComm + '  getPoster  '+ getPoster)
+    // console.log('getComm  '+ getComm + '  getPoster  '+ getPoster)
 
     var dbRequest = await db.get('films');
-
-    await Film.findOne({ "id": getIdFilm },
+    
+    await Film.findOne({ "idFilm": getIdFilm },
     async function (err, result) {
       if (err) {
         console.log("pas ok");
@@ -252,6 +253,7 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
             poster_path : getPoster, //recup le poster.path le mettre dans la une variable qui renvoie vers la bdd !!!
             overview : getComm, // recup le commentaire
             release_date : getRelease_date,
+            genre : getGenre,
             commentaires: [
                 {
                     pseudo: getPseudo,
@@ -269,8 +271,9 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
         film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
         } 
         if (result) {
+            let collection = db.get('films')
             // Donc le film existe deja dans la bdd dans ce cas là on push le commentaire à la suite
-            db.films.update(
+            collection.update(
                 {"idFilm": getIdFilm},
                 { $addToSet: 
                     {"commentaires":
@@ -282,6 +285,8 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
                             "commentaire": getComment
                         }
                     }
+                },function(err,res){
+                    console.log(err)
                 }
              );
             console.log("commentaire ajouté")

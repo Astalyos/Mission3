@@ -108,6 +108,8 @@ block content
                         if (session.email)
                           div(class="addPost-section col-12")
                             form(action="formulaireCommentaire", method="post")
+                              for arraygenreFilm in obj.genre_ids
+                                input(type="hidden" id="genreIds" name="genreIds" value=arraygenreFilm)
                               input(type="hidden" id="release_date" name="release_date" value=obj.release_date)
                               input(type="hidden" id="poster_Path" name="poster_Path" value=obj.poster_path)
                               input(type="hidden" id="commentaireFilm" name="commentaireFilm" value=obj.overview)

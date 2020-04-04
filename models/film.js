@@ -6,6 +6,7 @@ var Film = new Schema({
     poster_path: String,
     overview: String,
     release_date: String,
+    genre: [],
     // rajouter une array de genreIds recup de la requete apitmdb !!! 
     commentaires: []
 });

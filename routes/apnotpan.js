@@ -161,9 +161,11 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:eta
     
     if (etat == "now"){
         var h2 = "Films actuellement en salles :";
+        var type ="now"; 
     }
     else if (etat == "venir"){
         var h2 = "Films prochainement en salles :";
+        var type = "venir";
     }
 
     res.render('api', {
@@ -180,6 +182,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:eta
         dateFin: dateFin,
         genre: toutLesGenres,
         h2:h2,
+        type:type,
     });
 });
 
@@ -202,6 +205,7 @@ router.get('/api/getdate', async function (req, res, next) {
 router.post('/api/getdate1', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
     var dateFin = req.body.date_de_fin;
+    var etat = req.body.etat;
 
     // console.log("Date début : "+ dateDebut +" ,Date Fin : "+dateFin);
 
@@ -210,9 +214,10 @@ router.post('/api/getdate1', async function (req, res, next) {
         dateDebut = getJour("debut","now");
         dateFin = getJour("fin","now");
     };
+    console.log("Getdate1 datedebut "+dateDebut+"  datefin "+ dateFin+"  etat  "+etat)
     // console.log("route getdate1 "+dateDebut+" "+dateFin)
     //console.log(dateDebut, dateFin);
-    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat=now");
+    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat="+etat);
 })
 
 

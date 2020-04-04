@@ -19,6 +19,7 @@ var usersRouter = require('./routes/users');
 var musiquesRouter = require('./routes/musiques')
 var apnotpanRouter = require('./routes/apnotpan');
 var connectionRouter = require('./routes/connection');
+var critiqueRouter = require('./routes/critique');
 var apiRouter = require('./api/rest');
 
 
@@ -83,6 +84,7 @@ app.use('/users', usersRouter);
 app.use('/musiques', musiquesRouter);
 app.use('/apnotpan', apnotpanRouter);
 app.use('/connection', connectionRouter);
+app.use('/critique', critiqueRouter);
 
 
 

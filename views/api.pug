@@ -16,6 +16,7 @@ block content
         form(method="post" action="/apnotpan/api/getdate1" id='dateOfFilm' enctype='multipart/form-data')
           div(class="form-content")
             input(type="hidden" name="pagenumber" id="pagenumber" value=1)
+            input(type="hidden" name="etat" id="etat" value=type)
             .col-5
               label(for="date_de_debut") Date de début :
               input(type="date" name="date_de_debut" id="date_de_debut")
@@ -31,7 +32,7 @@ block content
         nav(aria-label="Page navigation example")
           ul(class="pagination")
             li(class="page-item")
-              a(class="page-link" href="/apnotpan/api/page="+ previous +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin) Previous
+              a(class="page-link" href="/apnotpan/api/page="+ previous +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin+"&etat="+type) Previous
             while (total_pages>= val_moins_3 && val_moins_3 <= val_plus_3)
               input(type="hidden" value=total_pages+" "+ val_moins_3 + " " + totalpage_plus_3)
               if (val_moins_3 == getpage)
@@ -41,14 +42,14 @@ block content
                       span(type="hidden")= val_moins_3
               if (getpage != val_moins_3)
                 li(class="page-item")
-                  a(class="page-link" href="/apnotpan/api/page="+ val_moins_3 +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin)= val_moins_3
+                  a(class="page-link" href="/apnotpan/api/page="+ val_moins_3 +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin+"&etat="+type)= val_moins_3
                     //- if (val_moins_3 != total_pages && getpage != val_moins_3)
               if (getpage == total_pages)
                 span(type="hidden" value= val_moins_3)
               span(type="hidden" value= val_moins_3++)
               
             li(class="page-item")
-              a(class="page-link" href="/apnotpan/api/page="+ next +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin) Next 
+              a(class="page-link" href="/apnotpan/api/page="+ next +"&dateDebut="+ dateDebut +"&dateFin="+ dateFin+"&etat="+type) Next 
           p(class="affichageDate")
             span(class="affichageDateDebut")= dateDebut
             span(class="affichageDateFin")= dateFin

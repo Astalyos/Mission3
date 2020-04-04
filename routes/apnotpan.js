@@ -243,7 +243,8 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
           // Creation d’un film dans la bdd si non existant à l'envoie d'un premier commentaire
           var film = new Film({
             idFilm: getIdFilm,
-            titre: getTitreFilm,
+            title: getTitreFilm,
+            //poster_path : recup le poster.path le mettre dans la une variable qui renvoie vers la bdd !!!
             commentaires: [
                 {
                     pseudo: getPseudo,
@@ -255,7 +256,7 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
             ]
           });
           // Enregistre dans la BDD.
-          console.log(film);
+        //   console.log(film);
           console.log("idfilm : "+getIdFilm+" , titreFilm : "+getTitreFilm+" , get Note : "+ getNote + " , + getPseudo : "+getPseudo + " , commentaire : "+ getComment)
           film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
         } 

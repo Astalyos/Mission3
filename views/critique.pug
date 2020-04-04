@@ -1,0 +1,90 @@
+extends layout
+
+block content
+
+  article(id='top' class='wrapper style1')
+    div.container
+      h1(class='center') Critique page
+
+    if (result)
+        div(class="card-deck d-flex col-12")
+          each obj in result
+            div(class="col-md-6 col-lg-4 mt-3")
+              div(class="card mb-3")
+                .row
+                  div(class="col-md-5")
+                    //- if (obj.poster_path != null)
+                    if (obj.poster_path == null)
+                      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' class="card-img" alt="Card image cap")
+                    if (obj.poster_path != null)
+                      img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path class="card-img" alt="Card image cap")
+                  //- else  
+                  //-   img(src="https://lh3.googleusercontent.com/proxy/STyptWkYD2Y3BpNRD2ND1MqKSBqyjhwia7WRzF3ojtMX0fNpQPkesX3XidmkUqrRAfQ531NvONp7MsdVdSf6TQsXjzFfZPk9OHU4Jo2bH9d_MOGBL6i6_0moWihmCb1lsDgQdpLr" class="card-img" alt="Card image cap")
+                  div(class="col-md-7 adjustement")
+                    h5(class="card-title")= obj.title
+                    div(class="card-body")
+                      if (!obj.overview)
+                        p(class="card-text scroller")= "Pas de description pour le moment"
+                      if (obj.overview)
+                        p(class="card-text scroller")= obj.overview
+                    div(class="card-footer")
+                      small(class="text-muted")= "Date de sortie : " + obj.release_date
+                      button(type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_"+obj.id)
+                        i(class="far fa-arrow-alt-circle-right")
+
+            //Modal Film
+            div(class="modal fade" id="modal_"+obj.id tabindex="-1" role="dialog" aria-labelledby=obj.title aria-hidden="true")
+              div(class="modal-dialog modal-dialog-centered modal-xl" role="document")
+                div(class="modal-content")
+                  div(class="modal-header")
+                    h5(class="modal-title" id=obj.title)= obj.title
+                    button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                      span(aria-hidden="true") ❌
+                  div(class="modal-body")
+                    if (obj.poster_path == null)
+                      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' alt="img poster")
+                    if (obj.poster_path != null)
+                      img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path alt="img poster")
+                    h4 Description 
+                    if (!obj.overview)
+                      p= "Pas de description pour le moment"
+                    if (obj.overview)
+                      p= obj.overview
+                    h4 Genre
+                    //for arraygenreFilm in obj.genre_ids
+                      for allGenre in genre
+                        if allGenre.id == arraygenreFilm
+                          p(class="genre")= allGenre.name
+                    div(class='Commentaire-section')
+                      h2 Commentaires
+                      div(class='commentaire-items')
+                        if (session.email)
+                          div(class="addPost-section col-12")
+                            form(action="formulaireCommentaire", method="post")
+                              input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.id)
+                              input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
+                              div.row
+                                .col-6.pseudo-section
+                                  label(for="Pseudo") Votre pseudo :
+                                  input(class="form-control" type="text" disabled="disabled" name="pseudo" id="pseudo" value=session.pseudo)
+                                .col-6.note-section
+                                  label(class="mr-sm-2" for="Note") Note :
+                                  select(class="custom-select mr-sm-2" id="Note" name="Note")
+                                    option(value="1") 1/5 Médiocre
+                                    option(value="2") 2/5 Moyen
+                                    option(value="3" selected) 3/5 Bon
+                                    option(value="4") 4/5 Très bon
+                                    option(value="5") 5/5 Excellent
+                                .col-12
+                                  label(for="Commentaire") Votre commentaire :
+                                  textarea(class="form-control form-control-lg" rows="3" name="Commentaire" id="Commentaire" placeholder="Inserez votre commentaire")
+                                .col-12.d-flex.justify-content-center
+                                  button(type="submit" class="btn btn-primary") Envoyez !
+
+
+
+
+                  div(class="modal-footer")
+                    p= "Date de sortie : " + obj.release_date
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                    button(type="button" class="btn btn-primary") Save changes

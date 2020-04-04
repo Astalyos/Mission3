@@ -4,7 +4,7 @@ var axios = require('axios');
 var session = require('express-session');
 var Film = require('../models/film');
 
-function getJour(etat){
+function getJour(etat,now){
     //Recupere la date d'aujourd'hui
     var date = new Date();
     let years = date.getFullYear();
@@ -13,26 +13,37 @@ function getJour(etat){
 
     month = parseInt(month) + 1; // 01 janvier // 12 decembre
     
-    console.log("Année "+years+"mois "+ month +"Jour "+ numjour)
-
-    // avoir les film actuellement en salle 
-    if (etat == "debut"){
-        month = parseInt(month)-1;
-        if (month == 0){
-            years = parseInt(years)-1;
-            console.log("année "+years);
-            month = 12;
-            console.log("mois "+month)
+    if (now == "venir"){
+        month = parseInt(month) + 1 ;
+        
+        // Pour avoir les dates de fin des film a venir
+        if (etat =="fin"){
+            month = parseInt(month) + 1 ;
         }
     }
+    if (now =="now"){
+        // avoir les film actuellement en salle 
+        if (etat == "debut"){
+            month = parseInt(month)-1;
+        }
+    }
+
+    //Si le mois = 0 alors il se transformera en 12 
+    if (month == 0){
+        years = parseInt(years)-1;
+        month = 12;
+    }
+
     // rajouter un 0 
     if (month < 10) {
         month = "0" + month;
     }
+
     // idem 
     if(numjour < 10){
         numjour = "0"+numjour
     }
+
     date = years + "-" + month + "-" + numjour
     return date
 };
@@ -49,8 +60,8 @@ router.get('/', function (req, res, next) {
 
 });
 
-// main route pour l'api
-router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async function (req, res, next) {
+// main route pour l'api renvoie vers les films actu en salle 
+router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:etat', async function (req, res, next) {
     // var isConnected = "";
     var db = req.db;
     if (req.session.email){
@@ -65,11 +76,13 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     // }
     // var getUserInfo = req.body.userInfo;
     // var getConnected = req.body.connected;
+    
     var getpage = parseInt(req.params.pages) || 1;
+    var etat = (req.params.etat)
 
     // appel de la function pour recup la date 
-    var dateDebut = (req.params.dateDebut) || getJour("debut");
-    var dateFin = (req.params.dateFin) || getJour("fin");
+    var dateDebut = (req.params.dateDebut) || getJour("debut","now");
+    var dateFin = (req.params.dateFin) || getJour("fin","now");
     console.log(dateDebut+"   "+dateFin)
 
     // Requete vers l'api TMDB
@@ -91,22 +104,23 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     var collectFilmUserCommented = await db.get('films').find();
 
     //Comprehension avec console.log
-    {
-    console.log("liste film bdd : ");
-    console.log(collectFilmUserCommented);
-    console.log("================================");
-    console.log('liste film bdd Stringlyfied : ');
-    console.log(JSON.stringify(collectFilmUserCommented));
-    console.log('================================');
-    console.log("test :");
-    console.log(collectFilmUserCommented[0]);
-    console.log('================================');
-    console.log('test stringyfied : ');
-    console.log(JSON.stringify(collectFilmUserCommented[0]));
-    console.log('================================');
-    console.log("test 02 :");
-    console.log(JSON.stringify(collectFilmUserCommented[0][1]))
-    }
+
+    // {
+    // console.log("liste film bdd : ");
+    // console.log(collectFilmUserCommented);
+    // console.log("================================");
+    // console.log('liste film bdd Stringlyfied : ');
+    // console.log(JSON.stringify(collectFilmUserCommented));
+    // console.log('================================');
+    // console.log("test :");
+    // console.log(collectFilmUserCommented[0]);
+    // console.log('================================');
+    // console.log('test stringyfied : ');
+    // console.log(JSON.stringify(collectFilmUserCommented[0]));
+    // console.log('================================');
+    // console.log("test 02 :");
+    // console.log(JSON.stringify(collectFilmUserCommented[0][1]))
+    // }
     
     // Eviter que la navbar de page aille dans les négatifs
     // Cas ou il y à moins de 3 pages en results
@@ -144,6 +158,13 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     if (previous <= 0) {
         previous = 1;
     }
+    
+    if (etat == "now"){
+        var h2 = "Films actuellement en salles :";
+    }
+    else if (etat == "venir"){
+        var h2 = "Films prochainement en salles :";
+    }
 
     res.render('api', {
         title: 'Apnotpan',
@@ -158,6 +179,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
         dateDebut: dateDebut,
         dateFin: dateFin,
         genre: toutLesGenres,
+        h2:h2,
     });
 });
 
@@ -166,16 +188,14 @@ router.get('/api/getdate', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
     var dateFin = req.body.date_de_fin;
 
-    console.log("Date début : "+ dateDebut +" ,Date Fin : "+dateFin);
-
     if (!dateDebut || !dateFin) {
         // appel de la function pour recup la date 
-        dateDebut = getJour("debut");
-        dateFin = getJour("fin");
+        dateDebut = getJour("debut","now");
+        dateFin = getJour("fin","now");
     };
-    console.log("getdate SA PASSSE DANS LE ROUTER")
-    //console.log(dateDebut, dateFin);
-    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin);
+    // console.log("route getdate "+dateDebut+" "+dateFin)
+    // console.log(dateDebut, dateFin);
+    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat=now");
 })
 
 // Bouton validation formulaire pour la date
@@ -183,15 +203,16 @@ router.post('/api/getdate1', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
     var dateFin = req.body.date_de_fin;
 
-    console.log("Date début : "+ dateDebut +" ,Date Fin : "+dateFin);
+    // console.log("Date début : "+ dateDebut +" ,Date Fin : "+dateFin);
 
     if (!dateDebut || !dateFin) {
         // appel de la function pour recup la date 
-        dateDebut = getJour("debut");
-        dateFin = getJour("fin");
+        dateDebut = getJour("debut","now");
+        dateFin = getJour("fin","now");
     };
+    // console.log("route getdate1 "+dateDebut+" "+dateFin)
     //console.log(dateDebut, dateFin);
-    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin);
+    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat=now");
 })
 
 
@@ -257,7 +278,21 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
       }
     });
 
-    res.redirect('/api/getdate')
+    res.redirect('/apnotpan/api/getdate')
+})
+
+router.get('/api/filmaVenir', async function (req, res, next) {
+    var dateDebut = req.body.date_de_debut;
+    var dateFin = req.body.date_de_fin;
+
+    console.log("Rentre dans la redirection de filmAVenir")
+    
+    if (!dateDebut || !dateFin) {
+        // appel de la function pour recup la date 
+        dateDebut = getJour("debut","venir");
+        dateFin = getJour("fin","venir");
+    };
+    return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat=venir");
 })
 
 // pas utilisé encore

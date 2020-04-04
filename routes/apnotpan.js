@@ -167,7 +167,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:eta
         var h2 = "Films prochainement en salles :";
         var type = "venir";
     }
-
+    console.log(" dateDebut "+dateDebut+" dateFin "+dateFin)
     res.render('api', {
         title: 'Apnotpan',
         movies: FilmData,

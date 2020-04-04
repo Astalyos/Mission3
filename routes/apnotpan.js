@@ -52,7 +52,12 @@ router.get('/', function (req, res, next) {
 // main route pour l'api
 router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async function (req, res, next) {
     // var isConnected = "";
-    console.log(req.session.email+" is connected");
+    var db = req.db;
+    if (req.session.email){
+        console.log(req.session.email+" is connected");
+    }else{
+        console.log("no one connected");
+    }
     // if (!req.session.email) {
     //     isConnected = "Not connected"
     // } else {
@@ -81,7 +86,27 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     var totalpage_plus_3 = getTotalPages + 3;
     var next = parseInt(getpage) + 1;
     var previous = parseInt(getpage) - 1;
-    
+
+    //Retour des commentaires de bdd
+    var collectFilmUserCommented = await db.get('films').find();
+
+    //Comprehension avec console.log
+    {
+    console.log("liste film bdd : ");
+    console.log(collectFilmUserCommented);
+    console.log("================================");
+    console.log('liste film bdd Stringlyfied : ');
+    console.log(JSON.stringify(collectFilmUserCommented));
+    console.log('================================');
+    console.log("test :");
+    console.log(collectFilmUserCommented[0]);
+    console.log('================================');
+    console.log('test stringyfied : ');
+    console.log(JSON.stringify(collectFilmUserCommented[0]));
+    console.log('================================');
+    console.log("test 02 :");
+    console.log(JSON.stringify(collectFilmUserCommented[0][1]))
+    }
     
     // Eviter que la navbar de page aille dans les négatifs
     // Cas ou il y à moins de 3 pages en results
@@ -119,6 +144,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin', async fu
     if (previous <= 0) {
         previous = 1;
     }
+
     res.render('api', {
         title: 'Apnotpan',
         movies: FilmData,
@@ -180,10 +206,10 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
     var getIdFilm = ""+req.body.filmIdToBdd; 
     var getTitreFilm = ""+req.body.titreFilm;  
 
-    var dbRequest = await db.get('film');
+    var dbRequest = await db.get('films');
 
     await Film.findOne({ "id": getIdFilm },
-    function (err, result) {
+    async function (err, result) {
       if (err) {
         console.log("pas ok");
       } else {
@@ -203,18 +229,35 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
             ]
           });
           // Enregistre dans la BDD.
-          console.log("idfilm : "+getIdFilm+" , titreFilm : "+getTitreFilm+" , get Note : "+ getNote + " , + getPseudo : "+getPseudo)
+          console.log(film);
+          console.log("idfilm : "+getIdFilm+" , titreFilm : "+getTitreFilm+" , get Note : "+ getNote + " , + getPseudo : "+getPseudo + " , commentaire : "+ getComment)
           film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
-        } else {
-            // Donc le film existe deja dans la bdd
-            console.log(result)
+        } 
+        if (result) {
+            // Donc le film existe deja dans la bdd dans ce cas là on push le commentaire à la suite
+            db.films.update(
+                {"idFilm": getIdFilm},
+                { $addToSet: 
+                    {"commentaires":
+                        {
+                            "pseudo" : getPseudo,
+                            "email": getEmail,
+                            "uid": getUid,
+                            "note": getNote,
+                            "commentaire": getComment
+                        }
+                    }
+                }
+             );
+            console.log("commentaire ajouté")
+            console.log("result : " + result)
             // db.get('film').find({id: getIdFilm})
         }
         // CEST PAS FINI ENCORE XD MAIS C UN BON DEBUT NAN ? 
       }
     });
-    res.redirect('/users')
-    // .find({ email: email });
+
+    res.redirect('/api/getdate')
 })
 
 // pas utilisé encore

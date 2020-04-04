@@ -19,7 +19,7 @@ router.get('/admin', async function (req, res, next) {
 
 // Affichage de la liste
 router.get('/', async function (req, res, next) {
-  console.log(req.session.id);
+  console.log(req.session.uid);
   var db = req.db;
   var isConnected = false;
   await Account.findOne({ "email": "admin@admin.fr" },

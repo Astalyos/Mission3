@@ -35,6 +35,6 @@ router.get('/modifComm',async function(req,res,next){
     // requete bdd qui modifie le commentaire de la personne donc mettre sur le pug un input hidden de l'ancien commentaire et du nouveau !!!
     // requete bdd db.films.update({"idFilm":"idDuFilm","commentaires.uid":"!l'uid de l'utilisateur","commentaires.commentaire":"!ancien commentaire"},{$set:{"commentaires.commentaire":"!nouveau commentaire"}})
     // si la celle la ↑ ne marche pas alors prendre celle la ↓
-    // requete bdd db.films.update({"idFilm":"idDuFilm","commentaires.uid":"!l'uid de l'utilisateur","commentaires.commentaire":"!ancien commentaire"},{$set:{"commentaires{commentaire":"!nouveau commentaire"}})
+    // requete bdd db.films.update({"idFilm":"idDuFilm","commentaires.uid":"!l'uid de l'utilisateur","commentaires.commentaire":"!ancien commentaire"},{$set:{"commentaires":{"commentaire":"!nouveau commentaire"}})
 })
 module.exports = router;

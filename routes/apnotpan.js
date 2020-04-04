@@ -230,7 +230,12 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
     var getNote = parseInt(req.body.Note);
     var getComment = req.body.Commentaire;
     var getIdFilm = ""+req.body.filmIdToBdd; 
-    var getTitreFilm = ""+req.body.titreFilm;  
+    var getTitreFilm = ""+req.body.titreFilm;
+    var getComm = req.body.commentaireFilm;
+    var getPoster = req.body.poster_Path;
+    var getRelease_date = req.body.release_date;
+
+    console.log('getComm  '+ getComm + '  getPoster  '+ getPoster)
 
     var dbRequest = await db.get('films');
 
@@ -244,7 +249,9 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
           var film = new Film({
             idFilm: getIdFilm,
             title: getTitreFilm,
-            //poster_path : recup le poster.path le mettre dans la une variable qui renvoie vers la bdd !!!
+            poster_path : getPoster, //recup le poster.path le mettre dans la une variable qui renvoie vers la bdd !!!
+            overview : getComm, // recup le commentaire
+            release_date : getRelease_date,
             commentaires: [
                 {
                     pseudo: getPseudo,
@@ -257,8 +264,9 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
           });
           // Enregistre dans la BDD.
         //   console.log(film);
-          console.log("idfilm : "+getIdFilm+" , titreFilm : "+getTitreFilm+" , get Note : "+ getNote + " , + getPseudo : "+getPseudo + " , commentaire : "+ getComment)
-          film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
+        //   console.log("idfilm : "+getIdFilm+" , titreFilm : "+getTitreFilm+" , get Note : "+ getNote + " , + getPseudo : "+getPseudo + " , commentaire : "+ getComment)
+        console.log('overview = '+getComm+'  poster_path = '+getPoster)  
+        film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
         } 
         if (result) {
             // Donc le film existe deja dans la bdd dans ce cas là on push le commentaire à la suite

@@ -63,13 +63,10 @@ block content
               div(class="card mb-3")
                 .row
                   div(class="col-md-5")
-                    //- if (obj.poster_path != null)
                     if (obj.poster_path == null)
                       img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' class="card-img" alt="Card image cap")
                     if (obj.poster_path != null)
                       img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path class="card-img" alt="Card image cap")
-                  //- else  
-                  //-   img(src="https://lh3.googleusercontent.com/proxy/STyptWkYD2Y3BpNRD2ND1MqKSBqyjhwia7WRzF3ojtMX0fNpQPkesX3XidmkUqrRAfQ531NvONp7MsdVdSf6TQsXjzFfZPk9OHU4Jo2bH9d_MOGBL6i6_0moWihmCb1lsDgQdpLr" class="card-img" alt="Card image cap")
                   div(class="col-md-7 adjustement")
                     h5(class="card-title")= obj.title
                     div(class="card-body")
@@ -111,6 +108,9 @@ block content
                         if (session.email)
                           div(class="addPost-section col-12")
                             form(action="formulaireCommentaire", method="post")
+                              input(type="hidden" id="release_date" name="release_date" value=obj.release_date)
+                              input(type="hidden" id="poster_Path" name="poster_Path" value=obj.poster_path)
+                              input(type="hidden" id="commentaireFilm" name="commentaireFilm" value=obj.overview)
                               input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.id)
                               input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
                               div.row
@@ -136,7 +136,7 @@ block content
 
                   div(class="modal-footer")
                     p= "Date de sortie : " + obj.release_date
-                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
-                    button(type="button" class="btn btn-primary") Save changes
+                    //- button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                    //- button(type="button" class="btn btn-primary") Save changes
                 
         

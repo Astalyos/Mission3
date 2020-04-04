@@ -61,30 +61,45 @@ block content
                         if (session.email)
                           div(class="addPost-section col-12")
                             form(action="formulaireCommentaire", method="post")
-                              input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.id)
-                              input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
-                              div.row
+                                input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.id)
+                                input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
+                                div.row
                                 .col-6.pseudo-section
-                                  label(for="Pseudo") Votre pseudo :
-                                  input(class="form-control" type="text" disabled="disabled" name="pseudo" id="pseudo" value=session.pseudo)
+                                    label(for="Pseudo") Votre pseudo :
+                                    input(class="form-control" type="text" disabled="disabled" name="pseudo" id="pseudo" value=session.pseudo)
                                 .col-6.note-section
-                                  label(class="mr-sm-2" for="Note") Note :
-                                  select(class="custom-select mr-sm-2" id="Note" name="Note")
-                                    option(value="1") 1/5 Médiocre
-                                    option(value="2") 2/5 Moyen
-                                    option(value="3" selected) 3/5 Bon
-                                    option(value="4") 4/5 Très bon
-                                    option(value="5") 5/5 Excellent
+                                    label(class="mr-sm-2" for="Note") Note :
+                                    select(class="custom-select mr-sm-2" id="Note" name="Note")
+                                        if(obj.commentaires[0].note == 1)
+                                            option(value="1" selected) 1/5 Médiocre
+                                        if(obj.commentaires[0].note != 1)
+                                            option(value="1" ) 1/5 Médiocre
+                                        if(obj.commentaires[0].note == 2)
+                                            option(value="2" selected) 2/5 Moyen
+                                        if(obj.commentaires[0].note != 2)
+                                            option(value="2") 2/5 Moyen
+                                        if(obj.commentaires[0].note == 3) 
+                                            option(value="3" selected) 3/5 Bon
+                                        if(obj.commentaires[0].note != 3)
+                                            option(value="3") 3/5 Bon
+                                        if(obj.commentaires[0].note == 4) 
+                                            option(value="3" selected) 4/5 Bon
+                                        if(obj.commentaires[0].note != 4)
+                                            option(value="3") 4/5 Bon
+                                        if(obj.commentaires[0].note == 5) 
+                                            option(value="3" selected) 5/5 Bon
+                                        if(obj.commentaires[0].note != 5)
+                                            option(value="3") 5/5 Bon
                                 .col-12
-                                  label(for="Commentaire") Votre commentaire :
-                                  textarea(class="form-control form-control-lg" rows="3" name="Commentaire" id="Commentaire" placeholder="Inserez votre commentaire")
+                                    label(for="Commentaire") Votre commentaire :
+                                    input(class="form-control form-control-lg" rows="3" name="Commentaire" id="Commentaire" value=obj.commentaires[0].commentaire )
                                 .col-12.d-flex.justify-content-center
-                                  button(type="submit" class="btn btn-primary") Envoyez !
+                                    button(type="submit" class="btn btn-primary") Envoyez !
 
 
 
 
                   div(class="modal-footer")
                     p= "Date de sortie : " + obj.release_date
-                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
-                    button(type="button" class="btn btn-primary") Save changes
+                    //- button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                    //- button(type="button" class="btn btn-primary") Save changes

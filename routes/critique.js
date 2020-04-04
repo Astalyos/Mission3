@@ -11,6 +11,9 @@ router.get('/', async function (req, res, next) {
     var toutLesGenres = getGenre.data.genres;
     await Film.find({"commentaires.uid": getUid},{"commentaires.commentaire":1,"commentaires.note":1,"title":1,"poster_path":1,"overview":1,"release_date":1,"genre":1},
     async function (err, result) {
+        if(err){
+            console.log(err);
+        }
         data = result
         console.log(data)
     })

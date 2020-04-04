@@ -14,7 +14,6 @@ function getJour(etat,now){
     month = parseInt(month) + 1; // 01 janvier // 12 decembre
     
     if (now == "venir"){
-        month = parseInt(month) + 1 ;
         
         // Pour avoir les dates de fin des film a venir
         if (etat =="fin"){
@@ -250,8 +249,8 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
           var film = new Film({
             idFilm: getIdFilm,
             title: getTitreFilm,
-            poster_path : getPoster, //recup le poster.path le mettre dans la une variable qui renvoie vers la bdd !!!
-            overview : getComm, // recup le commentaire
+            poster_path : getPoster, 
+            overview : getComm, 
             release_date : getRelease_date,
             genre : getGenre,
             commentaires: [

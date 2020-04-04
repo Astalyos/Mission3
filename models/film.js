@@ -7,7 +7,6 @@ var Film = new Schema({
     overview: String,
     release_date: String,
     genre: [],
-    // rajouter une array de genreIds recup de la requete apitmdb !!! 
     commentaires: []
 });
 module.exports = mongoose.model('Film', Film);

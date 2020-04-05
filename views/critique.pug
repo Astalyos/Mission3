@@ -74,7 +74,6 @@ block content
                         if commentaire.pseudo == session.pseudo
                           form(action="critique/modifComm", method="post")
                               // je ne sais pas comment dire au formulaire si sa supprim ou sa modifie
-                              input(type="hidden" value=commentaire)
                               input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.idFilm)
                               input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
                               div.row

@@ -7,6 +7,7 @@ var axios = require('axios');
 router.get('/', async function (req, res, next) {
     var db = req.db;
     var collectFilmUserCommented = await db.get('films').find();
+    console.log(collectFilmUserCommented);
     var getUid = req.session.uid;
     var data = "";
     var getGenre = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=67c91e6c478de75dad308e127da768bf&language=fr');
@@ -19,7 +20,7 @@ router.get('/', async function (req, res, next) {
         data = result
         console.log(data)
     })
-    console.log(collectFilmUserCommented[0].commentaires)
+    // console.log(collectFilmUserCommented[0].commentaires)
     res.render('critique', {
         title: 'Apnotpan',
         result: data,

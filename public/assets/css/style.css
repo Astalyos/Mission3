@@ -101,15 +101,15 @@ p.card-text {
   z-index: 10001;
 }
 
-.modal-body img{
-  height: 300px;
+.Modal-body-head>.imgInModal{
+  height: 400px;
   width: auto;
   padding-right: 20px;
   float: left;
   display: block;
 }
 
-.modal-body p{
+.Modal-body-head p{
   font-size: 18px!important;
 }
 
@@ -223,4 +223,14 @@ li.acceuil{
 p.genre{
   display: inline-block;
   padding: 5px;
+}
+
+div.commentaire-items>.img-size{
+  width: fit-content;
+  height: auto;
+}
+
+.modal-body>div.commentaire-items>p.pseudoBdd{
+  font-size: 20px!important;
+  font-weight: bold;
 }

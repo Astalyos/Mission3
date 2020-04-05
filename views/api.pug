@@ -88,31 +88,36 @@ block content
                     button(type="button" class="close" data-dismiss="modal" aria-label="Close")
                       span(aria-hidden="true") ❌
                   div(class="modal-body")
-                    if (obj.poster_path == null)
-                      img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' alt="img poster")
-                    if (obj.poster_path != null)
-                      img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path alt="img poster")
-                    h4 Description 
-                    if (!obj.overview)
-                      p= "Pas de description pour le moment"
-                    if (obj.overview)
-                      p= obj.overview
-                    h4 Genre
-                    for arraygenreFilm in obj.genre_ids
-                      for allGenre in genre
-                        if allGenre.id == arraygenreFilm
-                          p(class="genre")= allGenre.name
-                    div(class='Commentaire-section')
-                      h2 Commentaires                         
-                      div(class='commentaire-items')
+                    div(class="Modal-body-head")
+                      if (obj.poster_path == null)
+                        img(class="imgInModal" src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' alt="img poster")
+                      if (obj.poster_path != null)
+                        img(class="imgInModal" src='http://image.tmdb.org/t/p/w500/'+obj.poster_path alt="img poster")
+                      h4 Description 
+                      if (!obj.overview)
+                        p= "Pas de description pour le moment"
+                      if (obj.overview)
+                        p= obj.overview
+                      h4 Genre
+                      for arraygenreFilm in obj.genre_ids
+                        for allGenre in genre
+                          if allGenre.id == arraygenreFilm
+                            p(class="genre")= allGenre.name
+                    div(class='Commentaire-section ml-3 mt-3')
+                      h2(style="margin-bottom: 5px;") Commentaires                         
+                      div(class='commentaire-items pb-3')
                         if !commentaireBdd
                           for eachObj in CommentaireBdd
                             if eachObj.idFilm == obj.id
                               for eachCommentaire in eachObj.commentaires
-                                p(class="pseudoBdd")= eachCommentaire.pseudo
-                                p(class="CommentaireBdd")= eachCommentaire.commentaire
+                                div.row.comment.mt-1.mb-1.ml-1.mr-1
+                                  div.col-1(style="padding-right: 10px; padding-left: 10px;")
+                                    img(class="img-size rounded float-left" src="/images/account.png", alt="account img")
+                                  div.col-11(style="padding-top: 20px; padding-left: 5px")
+                                    p(class="pseudoBdd" style="font-size:20px; font-weight: bold; margin-bottom:0; color: rgb(29, 60, 110);")= eachCommentaire.pseudo + ", note   : " + eachCommentaire.note
+                                    p(class="CommentaireBdd" style="font-size:18px; margin-bottom:0; color:black;")= eachCommentaire.commentaire
                   if (session.email)
-                    div(class="addPost-section col-12")
+                    div(class="addPost-section col-12 mt-2")
                       form(action="formulaireCommentaire", method="post")
                         for arraygenreFilm in obj.genre_ids
                           input(type="hidden" id="genreIds" name="genreIds" value=arraygenreFilm)
@@ -136,12 +141,12 @@ block content
                           .col-12
                             label(for="Commentaire") Votre commentaire :
                             textarea(class="form-control form-control-lg" rows="3" name="Commentaire" id="Commentaire" placeholder="Inserez votre commentaire")
-                          .col-12.d-flex.justify-content-center
+                          .col-12.d-flex.justify-content-center.mb-3
                             button(type="submit" class="btn btn-primary") Envoyez !
 
                   div(class="modal-footer")
                     p= "Date de sortie : " + obj.release_date
-                    //- button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
                     //- button(type="button" class="btn btn-primary") Save changes
                 
         

@@ -220,45 +220,47 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
                 });
                 // Enregistre dans la BDD.
                 film.save(function (err) { if (err) console.log('Erreur de sauvegarde !') });
-            } 
+            }
             if (result) {
                 let collection = db.get('films')
                 await collection.find({"idFilm":getIdFilm,"commentaires.commentaire":getComment,"commentaires.pseudo":getPseudo},{"commentaires.commentaire":1},function(err,res){
-                    let len = res[0].commentaires.length
-                    for (let i = 0 ; i<len;i++){
-                        if (res[0].commentaires[i].commentaire == getComment){
-                            var info = "Le commentaire existe déja";
-                            console.log(info)
-                            return; 
-                        }else{
-                            var info = "commentaire ajouté";
-                        }
-                    }
-                    // Donc le film existe deja dans la bdd dans ce cas là on push le commentaire à la suite
-                    collection.update(
-                        {"idFilm": getIdFilm},
-                        { $addToSet: 
-                            {"commentaires":
-                            {
-                                "pseudo" : getPseudo,
-                                "email": getEmail,
-                                "uid": getUid,
-                                "note": getNote,
-                                "commentaire": getComment
+                    console.log(res)
+                    if(!res){
+                        let len = res[0].commentaires.length
+                        for (let i = 0 ; i<len;i++){
+                            if (res[0].commentaires[i].commentaire == getComment){
+                                var info = "Le commentaire existe déja";
+                                console.log(info)
+                                return; 
+                            }else{
+                                var info = "commentaire ajouté";
                             }
                         }
-                    },function(err,result){
-                        if(err){console.log(err)}                    
+                    }else{
+                        console.log("Il n'existe pas de commentaire pour ce user");
                     }
-                    );
-                });
-                
-                
+                        // Donc le film existe deja dans la bdd dans ce cas là on push le commentaire à la suite
+                        collection.update(
+                            {"idFilm": getIdFilm},
+                            { $addToSet: 
+                                {"commentaires":
+                                {
+                                    "pseudo" : getPseudo,
+                                    "email": getEmail,
+                                    "uid": getUid,
+                                    "note": getNote,
+                                    "commentaire": getComment
+                                }
+                            }
+                        },function(err,result){
+                            if(err){console.log(err)}
+                        }
+                        );
+                });              
             }
             // CEST PAS FINI ENCORE XD MAIS C UN BON DEBUT NAN ? 
         }
     });
-    
     res.redirect('/apnotpan/api/getdate')
 })
 

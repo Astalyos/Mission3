@@ -62,7 +62,7 @@ body {
 }
 
 .scroller {
-  overflow-y: auto!important;
+  overflow-y: auto;
   scrollbar-width: thin!important;
   width: auto;
   height: auto;
@@ -87,10 +87,16 @@ p.card-text {
 .card-footer {
   border-radius: 25px!important;
   margin-left: 5px;
+  margin-right: 5px;
   margin-bottom: 5px;
-  padding-right: 0;
-  width: 88%;
-  font-size: 12px;
+  padding-right: 4px;
+  width: 92%;
+  font-size: 11px;
+}
+
+.card-footer>button{
+  display: inline-block;
+  margin-left: 25px!important;
 }
 
 .adjustement {

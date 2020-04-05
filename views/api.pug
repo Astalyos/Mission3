@@ -62,19 +62,19 @@ block content
             div(class="col-sm-6 col-md-6 col-lg-4 mt-3")
               div(class="card mb-3")
                 .row
-                  div(class="col-md-5")
+                  div(class="col-md-5" style="padding-right: 10px")
                     if (obj.poster_path == null)
                       img(src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png' class="card-img" alt="Card image cap")
                     if (obj.poster_path != null)
                       img(src='http://image.tmdb.org/t/p/w500/'+obj.poster_path class="card-img" alt="Card image cap")
-                  div(class="col-md-7 adjustement")
+                  div(class="col-md-7 adjustement" style="padding-right: 10px;")
                     h5(class="card-title")= obj.title
                     div(class="card-body")
                       if (!obj.overview)
                         p(class="card-text scroller")= "Pas de description pour le moment"
                       if (obj.overview)
                         p(class="card-text scroller")= obj.overview
-                    div(class="card-footer")
+                    div(class="card-footer" style="")
                       small(class="text-muted")= "Date de sortie : " + obj.release_date
                       button(type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_"+obj.id)
                         i(class="far fa-arrow-alt-circle-right")

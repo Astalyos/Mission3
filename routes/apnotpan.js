@@ -3,6 +3,7 @@ var router = express.Router();
 var axios = require('axios');
 var session = require('express-session');
 var Film = require('../models/film');
+var curl = require('curl');
 
 function getJour(etat,now){
     //Recupere la date d'aujourd'hui
@@ -159,6 +160,7 @@ router.get('/api/getdate', async function (req, res, next) {
         dateDebut = getJour("debut","now");
         dateFin = getJour("fin","now");
     };
+    console.log(curl.get("https://localhost:3000/apnotpan/api/page=1&dateDebut=" + dateDebut + '&dateFin=' + dateFin+"&etat=now", function(err, response, body) {}))
     return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat=now");
 })
 

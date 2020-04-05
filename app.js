@@ -12,6 +12,7 @@ var monk = require('monk');
 var mongoose = require('mongoose');
 var db = monk('localhost:27017/apnotpan');
 var axios = require('axios');
+var curl = require('curl');
 
 
 var indexRouter = require('./routes/index');

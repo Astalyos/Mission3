@@ -19,7 +19,9 @@ router.get('/admin', async function (req, res, next) {
 
 // Affichage de la liste
 router.get('/', async function (req, res, next) {
-  console.log(req.session.uid);
+  if (req.session.uid){
+    console.log(req.session.uid);
+  }
   var db = req.db;
   var isConnected = false;
   await Account.findOne({ "email": "admin@admin.fr" },
@@ -84,7 +86,7 @@ router.post('/login', async function (req, res, next) {
       } else {
         if (result) {
           // Si on à un resultat (donc un utilisateur existant)
-          if (password === getpassword) {
+          if (password == getpassword) {
             req.session.uid = result._id;
             req.session.email = result.email;
             req.session.pseudo = result.pseudo;
@@ -147,6 +149,8 @@ router.post('/register', async function (req, res, next) {
             // Saving it to the database.
             newUser.save(function (err) { if (err) console.log('Erreur de sauvegarde !'+err) });
             console.log("Félicitation, vous êtes enregistré !");
+          } else  {
+            console.log("Cet utilisateur existe deja / email deja existant ");
           }
         }
       }

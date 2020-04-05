@@ -10,27 +10,39 @@ block content
                         form(method='post' action='../connection/login' enctype='multipart/form-data')
                             div(class='row gtr-uniform')
                                 div(class='col-6')
-                                    input(type="email", name='email' id='email' placeholder='Email')
-                                    input(type="password", name='password' id='password' placeholder='Password')
+                                    div.form-inline
+                                        label(for="email") Email :
+                                        input(class="form-control" type="email", name='email' id='email' placeholder='Email')
+                                    div.form-inline
+                                        label(for="password") Password :
+                                        input(class="form-control" type="password", name='password' id='password' placeholder='Password' required)
                             div(class='col-12')
                                 ul(class='actions')
                                     li
-                                        input(type='submit' value='Se connecter' class='primary')
+                                        input(type='submit' value='Se connecter' class='primary mt-3')
 
                     .col-6
                         h2 S'inscrire
                         form(method='post' action='../connection/register' enctype='multipart/form-data')
                             div(class='row gtr-uniform')
                                 div(class='col-6')
-                                    input(type="text", name='registerPseudo' id='registerPseudo' placeholder='Pseudo')
-                                    input(type="email", name='registerEmail' id='registerEmail' placeholder='Email')
-                                    input(type="password", name='registerPassword' id='registerPassword' placeholder='Password')
-                                    input(type="password", name='confirmRegisterPassword' id='confirmRegisterPassword' placeholder='Confirm Password')
+                                    div.form-inline
+                                        label(for="registerPseudo") Pseudo :
+                                        input(class="form-control" type="text", name='registerPseudo' id='registerPseudo' placeholder='Pseudo' required)
+                                    div.form-inline
+                                        label(for="registerEmail") Email :
+                                        input(class="form-control" type="email", name='registerEmail' id='registerEmail' placeholder='Email' required)
+                                    div.form-inline
+                                        label(for="registerPassword") Password :
+                                        input(class="form-control" type="password", name='registerPassword' id='registerPassword' placeholder='Password' required)
+                                    div.form-inline
+                                        label(for="confirmRegisterPassword") Confirmation :
+                                        input(class="form-control" type="password", name='confirmRegisterPassword' id='confirmRegisterPassword' placeholder='Confirm Password' required)
                             div(class='col-12')
                                 ul(class='actions')
                                     li
-                                        input(type='submit' value='S\'enregistrer' class='primary')
+                                        input(type='submit' value='S\'enregistrer' class='primary mt-3')
                 if (isConnected)
                     form(method='post' action='../connection/deconnexion' enctype='multipart/form-data')
-                        input(type='submit' value='Se deconnecter' class='primary')
+                        input(type='submit' value='Se deconnecter' class='primary mt-3')
 

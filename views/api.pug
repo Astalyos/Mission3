@@ -103,38 +103,40 @@ block content
                         if allGenre.id == arraygenreFilm
                           p(class="genre")= allGenre.name
                     div(class='Commentaire-section')
-                      h2 Commentaires
+                      h2 Commentaires                         
                       div(class='commentaire-items')
-                        if (session.email)
-                          div(class="addPost-section col-12")
-                            form(action="formulaireCommentaire", method="post")
-                              for arraygenreFilm in obj.genre_ids
-                                input(type="hidden" id="genreIds" name="genreIds" value=arraygenreFilm)
-                              input(type="hidden" id="release_date" name="release_date" value=obj.release_date)
-                              input(type="hidden" id="poster_Path" name="poster_Path" value=obj.poster_path)
-                              input(type="hidden" id="commentaireFilm" name="commentaireFilm" value=obj.overview)
-                              input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.id)
-                              input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
-                              div.row
-                                .col-6.pseudo-section
-                                  label(for="Pseudo") Votre pseudo :
-                                  input(class="form-control" type="text" disabled="disabled" name="pseudo" id="pseudo" value=session.pseudo)
-                                .col-6.note-section
-                                  label(class="mr-sm-2" for="Note") Note :
-                                  select(class="custom-select mr-sm-2" id="Note" name="Note")
-                                    option(value="1") 1/5 Médiocre
-                                    option(value="2") 2/5 Moyen
-                                    option(value="3" selected) 3/5 Bon
-                                    option(value="4") 4/5 Très bon
-                                    option(value="5") 5/5 Excellent
-                                .col-12
-                                  label(for="Commentaire") Votre commentaire :
-                                  textarea(class="form-control form-control-lg" rows="3" name="Commentaire" id="Commentaire" placeholder="Inserez votre commentaire")
-                                .col-12.d-flex.justify-content-center
-                                  button(type="submit" class="btn btn-primary") Envoyez !
-
-
-
+                        for eachObj in CommentaireBdd
+                          if eachObj.idFilm == obj.id
+                            for eachCommentaire in eachObj.commentaires
+                              p(class="pseudoBdd")= eachCommentaire.pseudo
+                              p(class="CommentaireBdd")= eachCommentaire.commentaire
+                  if (session.email)
+                    div(class="addPost-section col-12")
+                      form(action="formulaireCommentaire", method="post")
+                        for arraygenreFilm in obj.genre_ids
+                          input(type="hidden" id="genreIds" name="genreIds" value=arraygenreFilm)
+                        input(type="hidden" id="release_date" name="release_date" value=obj.release_date)
+                        input(type="hidden" id="poster_Path" name="poster_Path" value=obj.poster_path)
+                        input(type="hidden" id="commentaireFilm" name="commentaireFilm" value=obj.overview)
+                        input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.id)
+                        input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
+                        div.row
+                          .col-6.pseudo-section
+                            label(for="Pseudo") Votre pseudo :
+                            input(class="form-control" type="text" disabled="disabled" name="pseudo" id="pseudo" value=session.pseudo)
+                          .col-6.note-section
+                            label(class="mr-sm-2" for="Note") Note :
+                            select(class="custom-select mr-sm-2" id="Note" name="Note")
+                              option(value="1") 1/5 Médiocre
+                              option(value="2") 2/5 Moyen
+                              option(value="3" selected) 3/5 Bon
+                              option(value="4") 4/5 Très bon
+                              option(value="5") 5/5 Excellent
+                          .col-12
+                            label(for="Commentaire") Votre commentaire :
+                            textarea(class="form-control form-control-lg" rows="3" name="Commentaire" id="Commentaire" placeholder="Inserez votre commentaire")
+                          .col-12.d-flex.justify-content-center
+                            button(type="submit" class="btn btn-primary") Envoyez !
 
                   div(class="modal-footer")
                     p= "Date de sortie : " + obj.release_date

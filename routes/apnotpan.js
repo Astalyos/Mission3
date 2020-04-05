@@ -101,6 +101,8 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:eta
 
     //Retour des commentaires de bdd
     var collectFilmUserCommented = await db.get('films').find();
+    console.log(collectFilmUserCommented);
+    console.log(collectFilmUserCommented[0].commentaires)
 
     //Comprehension avec console.log
 
@@ -182,6 +184,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:eta
         genre: toutLesGenres,
         h2:h2,
         type:type,
+        CommentaireBdd: collectFilmUserCommented,
     });
 });
 

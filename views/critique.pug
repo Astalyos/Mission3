@@ -53,9 +53,7 @@ block content
                       p= obj.overview
                     h4 Genre
                     for arraygenreFilm in obj.genre
-                        input(type="hidden"  value=arraygenreFilm+"     "+obj.genre +"t")
                         for allGenre in genre
-                            input(type="hidden"  value=arraygenreFilm+"     "+allGenre.id)
                             if allGenre.id == arraygenreFilm
                                 p(class="genre")= allGenre.name
                     div(class='Commentaire-section')
@@ -68,8 +66,9 @@ block content
                               p(class="CommentaireBdd")= eachCommentaire.commentaire
                   if (session.email)
                     div(class="addPost-section col-12")
-                      form(action="formulaireCommentaire", method="post")
-                          input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.id)
+                      form(action="critique/modifComm", method="post")
+                          // je ne sais pas comment dire au formulaire si sa supprim ou sa modifie
+                          input(type="hidden" id="filmIdToBdd" name="filmIdToBdd" value=obj.idFilm)
                           input(type="hidden" id="titreFilm" name="titreFilm" value=obj.title)
                           div.row
                             .col-6.pseudo-section
@@ -110,9 +109,11 @@ block content
                                         option(value="5" selected) 5/5 Excellent                               
                             .col-12
                                 label(for="Commentaire") Votre commentaire :
-                                input(class="form-control form-control-lg" rows="3" name="Commentaire" id="Commentaire" value=obj.commentaires[0].commentaire )
+                                textarea(name="NewCommentaire", cols="30", rows="10" value=obj.commentaires[0].commentaire)=obj.commentaires[0].commentaire 
+                                input(type="hidden" name="lastComment" value=obj.commentaires[0].commentaire )
                             .col-12.d-flex.justify-content-center
-                                button(type="submit" class="btn btn-primary") Envoyez !
+                                button(type="submit" class="btn btn-primary" value="delete" name="etat") Supprimer !
+                                button(type="submit" class="btn btn-primary" value="modify" name="etat") Modifier !
 
                   div(class="modal-footer")
                     p= "Date de sortie : " + obj.release_date

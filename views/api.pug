@@ -105,11 +105,12 @@ block content
                     div(class='Commentaire-section')
                       h2 Commentaires                         
                       div(class='commentaire-items')
-                        for eachObj in CommentaireBdd
-                          if eachObj.idFilm == obj.id
-                            for eachCommentaire in eachObj.commentaires
-                              p(class="pseudoBdd")= eachCommentaire.pseudo
-                              p(class="CommentaireBdd")= eachCommentaire.commentaire
+                        if !commentaireBdd
+                          for eachObj in CommentaireBdd
+                            if eachObj.idFilm == obj.id
+                              for eachCommentaire in eachObj.commentaires
+                                p(class="pseudoBdd")= eachCommentaire.pseudo
+                                p(class="CommentaireBdd")= eachCommentaire.commentaire
                   if (session.email)
                     div(class="addPost-section col-12")
                       form(action="formulaireCommentaire", method="post")

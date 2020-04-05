@@ -106,15 +106,16 @@ block content
                     div(class='Commentaire-section ml-3 mt-3')
                       h2(style="margin-bottom: 5px;") Commentaires                         
                       div(class='commentaire-items pb-3')
-                        for eachObj in CommentaireBdd
-                          if eachObj.idFilm == obj.id
-                            for eachCommentaire in eachObj.commentaires
-                              div.row.comment.mt-1.mb-1.ml-1.mr-1
-                                div.col-1(style="padding-right: 10px; padding-left: 10px;")
-                                  img(class="img-size rounded float-left" src="/images/account.png", alt="account img")
-                                div.col-11(style="padding-top: 20px; padding-left: 5px")
-                                  p(class="pseudoBdd" style="font-size:20px; font-weight: bold; margin-bottom:0; color: rgb(29, 60, 110);")= eachCommentaire.pseudo + ", note   : " + eachCommentaire.note
-                                  p(class="CommentaireBdd" style="font-size:18px; margin-bottom:0; color:black;")= eachCommentaire.commentaire
+                        if !commentaireBdd
+                          for eachObj in CommentaireBdd
+                            if eachObj.idFilm == obj.id
+                              for eachCommentaire in eachObj.commentaires
+                                div.row.comment.mt-1.mb-1.ml-1.mr-1
+                                  div.col-1(style="padding-right: 10px; padding-left: 10px;")
+                                    img(class="img-size rounded float-left" src="/images/account.png", alt="account img")
+                                  div.col-11(style="padding-top: 20px; padding-left: 5px")
+                                    p(class="pseudoBdd" style="font-size:20px; font-weight: bold; margin-bottom:0; color: rgb(29, 60, 110);")= eachCommentaire.pseudo + ", note   : " + eachCommentaire.note
+                                    p(class="CommentaireBdd" style="font-size:18px; margin-bottom:0; color:black;")= eachCommentaire.commentaire
                   if (session.email)
                     div(class="addPost-section col-12 mt-2")
                       form(action="formulaireCommentaire", method="post")
@@ -145,7 +146,7 @@ block content
 
                   div(class="modal-footer")
                     p= "Date de sortie : " + obj.release_date
-                    //- button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
                     //- button(type="button" class="btn btn-primary") Save changes
                 
         

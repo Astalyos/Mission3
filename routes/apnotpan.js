@@ -261,7 +261,7 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
             // CEST PAS FINI ENCORE XD MAIS C UN BON DEBUT NAN ? 
         }
     });
-    res.redirect('/apnotpan/api/getdate')
+    res.redirect('/critique')
 })
 
 router.get('/api/filmaVenir', async function (req, res, next) {

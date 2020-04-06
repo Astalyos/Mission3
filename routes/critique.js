@@ -60,7 +60,7 @@ router.post('/modifComm',async function(req,res,next){
                 }
             }
         }
-        )
+        );
         // requete bdd qui modifie le commentaire de la personne donc mettre sur le pug un input hidden de l'ancien commentaire et du nouveau !!!
         // requete bdd 
         

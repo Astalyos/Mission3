@@ -177,7 +177,7 @@ router.post('/register', async function (req, res, next) {
           console.log(req.session.email, req.session.pseudo, req.session.uid);
           res.redirect('/apnotpan/api/page=1&dateDebut=2020-03-01&dateFin=2020-03-31');
         } else {
-          console.log("something went wrong (connection.js ligne 161)")
+          console.log("something went wrong (connection.js ligne 180)")
         }
       }
     }

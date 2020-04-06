@@ -19,8 +19,8 @@ router.get('/', async function (req, res, next) {
         }
         data = result
     })
-    console.log(data)
-
+    // console.log(data)
+    
     // console.log(collectFilmUserCommented[0].commentaires)
     res.render('critique', {
         title: 'Apnotpan',
@@ -41,50 +41,99 @@ router.post('/modifComm',async function(req,res,next){
     var getUid = req.session.uid;
     var getEmail = req.session.email;
     var getPseudo = req.session.pseudo;
+    var positionInArrayOfCOmments = 0;
+    var commentairePosition = "";
+    
     if (etat == "modify"){
         let collection = db.get('films')
+        await collection.find({"idFilm":filmid},{ "commentaires.pseudo":1,"commentaires.email":1,"commentaires.uid":1,"commentaires.note":1,"commentaires.commentaire":1},
+        async function(err,res){
+            if(err){
+                console.log(err)
+            }else{               
+                let len = res[0].commentaires.length
+                for(let i = 0 ; i<len; i++){
+                    if(res[0].commentaires.commentaire == lastCom && res[0].commentaires.pseudo == getPseudo){
+                        positionInArrayOfCOmments = i;
+                        commentairePosition = "'commentaires."+positionInArrayOfCOmments+"'";
+                    }
+                }
+            }
+        }
+        )
         // requete bdd qui modifie le commentaire de la personne donc mettre sur le pug un input hidden de l'ancien commentaire et du nouveau !!!
         // requete bdd 
-        collection.update(
+        
+        await collection.update(
             {
                 "idFilm":filmid,
                 "commentaires.uid":getUid,
-                "commentaires.commentaire":lastCom
+                "commentaires.commentaire":lastCom,
+                "commentaires.pseudo":getPseudo,
+                "commentaires.email":getEmail
             },
             {$set:
                 {
-                    "commentaires":
-                    [{
+                    commentairePosition:
+                    {
                         "pseudo" : getPseudo,
                         "email": getEmail,
                         "uid": getUid,
                         "note": getNote,
                         "commentaire":newCom
-                    }]
+                    }
                 }
             },
-        async function (err,result){
-            if(err){
-                console.log("Probleme de modification" +err)
-            }
-            else{
-                console.log("Modification réalisée");
-            }
-        });
-        res.redirect("/critique")
-    }
-    else if(etat == "delete"){
-        let collection = db.get('films')
-        collection.update({'idFilm':filmid},{$pull: {'commentaires' : {'uid':getUid,'commentaire':lastCom}}},
-        async function(err,res){
-            if(err){
-                console.log("Probleme de suppression : " + err)
-            }else{
-                console.log("Supprime avec succes")
-            }
-        });
-        res.redirect("/critique")
-    }
-})
-
-module.exports = router;
+            async function (err,result){
+                if(err){
+                    console.log("Probleme de modification" +err)
+                    // db.films.update({'idFilm':filmid,
+                    // 'commentaires.uid':getUid,
+                    // 'commentaires.commentaire':lastCom,
+                    // 'commentaires.pseudo':getPseudo,
+                    // 'commentaires.email':getEmail},
+                    // {$set:{commentairePosition:{'pseudo':'"+getPseudo+"','email':'"+ getEmail+"','uid':'"+getUid+"','note':'"+ getNote+"','commentaire':'"+newCom+"'}}})"
+                }
+                else{
+                    console.log("Modification réalisée");
+                    console.log("Result = ")
+                    console.log(result)
+                    // console.log("Comme position "+commentairePosition)
+                    //console.log("db.films.update({'idFilm':'"+filmid+"','commentaires.uid':'"+getUid+"','commentaires.commentaire':'"+lastCom+"','commentaires.pseudo':'"+getPseudo+"','commentaires.email':'"+getEmail+"'},{$set:{"+commentairePosition+":{'pseudo':'"+getPseudo+"','email':'"+ getEmail+"','uid':'"+getUid+"','note':'"+ getNote+"','commentaire':'"+newCom+"'}}})")
+                    //Envoyez les anciens comms dans la bdd
+                    // collection.update(
+                    //     {
+                    //         "idFilm":filmid,
+                    //         "commentaires.uid":getUid
+                    //     },
+                    //     {$set:
+                    //         {
+                    //             "commentaires":
+                    //             [{
+                    //                 "pseudo" : getPseudo,
+                    //                 "email": getEmail,
+                    //                 "uid": getUid,
+                    //                 "note": getNote,
+                    //                 "commentaire":newCom
+                    //             }]
+                    //         }
+                    //     }
+                }
+            });
+            res.redirect("/critique")
+        }
+        else if(etat == "delete"){
+            let collection = db.get('films')
+            collection.update({'idFilm':filmid},{$pull: {'commentaires' : {'uid':getUid,'commentaire':lastCom}}},
+            async function(err,res){
+                if(err){
+                    console.log("Probleme de suppression : " + err)
+                }else{
+                    console.log("Supprime avec succes")
+                }
+            });
+            res.redirect("/critique")
+        }
+    })
+    
+    module.exports = router;

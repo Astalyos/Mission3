@@ -75,7 +75,7 @@ router.post('/modifComm',async function(req,res,next){
                     },
                     {$set:
                         {
-                            $commentairePosition: // commentairePosition n'est pas prise comme une variable mais comme un string
+                            [commentairePosition]: // commentairePosition n'est pas prise comme une variable mais comme un string
                             {
                                 "pseudo" : getPseudo,
                                 "email": getEmail,

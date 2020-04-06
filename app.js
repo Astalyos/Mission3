@@ -17,17 +17,12 @@ var curl = require('curl');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var musiquesRouter = require('./routes/musiques')
 var apnotpanRouter = require('./routes/apnotpan');
 var connectionRouter = require('./routes/connection');
 var critiqueRouter = require('./routes/critique');
-var apiRouter = require('./api/rest');
 
 
 var app = express();
-
-// Api
-app.use('/api', apiRouter);
 
 
 
@@ -82,7 +77,6 @@ app.use(fileUpload({
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/musiques', musiquesRouter);
 app.use('/apnotpan', apnotpanRouter);
 app.use('/connection', connectionRouter);
 app.use('/critique', critiqueRouter);

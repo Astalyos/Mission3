@@ -9,9 +9,9 @@ function getJour(etat,now){
     //Recupere la date d'aujourd'hui
     var date = new Date();
     let years = date.getFullYear();
-    let month = date.getMonth(); // 00 janvier 11 decembre 
+    let month = date.getMonth(); 
     let numjour = date.getDate();
-    month = parseInt(month) + 1; // 01 janvier // 12 decembre
+    month = parseInt(month) + 1;
     if (now == "venir"){ 
         // Pour avoir les dates de fin des film a venir
         if (etat =="fin"){
@@ -49,7 +49,7 @@ router.get('/', function (req, res, next) {
     
 });
 
-// main route pour l'api renvoie vers les films actu en salle 
+// Main route pour l'api renvoie vers les films actu en salle 
 router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:etat', async function (req, res, next) {
     var db = req.db;
     if (req.session.email){
@@ -75,6 +75,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:eta
     var FilmData = getMovie.data.results;
     var toutLesGenres = getGenre.data.genres;
     
+    //Variable pour la pagination de la page
     var val_moins_3 = parseInt(getpage) - 3;
     var val_plus_3 = parseInt(getpage) + 3;
     var totalpage_plus_3 = getTotalPages + 3;
@@ -86,6 +87,7 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:eta
     if (collectFilmUserCommented == []){
         console.log("aucun comm")
     }
+
     // Eviter que la navbar de page aille dans les négatifs
     // Cas ou il y à moins de 3 pages en results
     if (val_moins_3 <= 0) {
@@ -105,13 +107,12 @@ router.get('/api/page=?:pages&dateDebut=?:dateDebut&dateFin=?:dateFin&etat=?:eta
         }
         val_plus_3 = getTotalPages;
     }
-    
+
     //Si on se trouve sur la page 1 cela permet d'avoir les 7 pages d'afficher
     if (getpage == 1) {
         val_moins_3 = 1;
         val_plus_3 = getpage + 6;
     }
-    
     
     // Bouton next de la navbar page ne doit pas être supérieur au max disponible
     if (next >= getTotalPages) {
@@ -160,7 +161,7 @@ router.get('/api/getdate', async function (req, res, next) {
         dateDebut = getJour("debut","now");
         dateFin = getJour("fin","now");
     };
-    console.log(curl.get("https://localhost:3000/apnotpan/api/page=1&dateDebut=" + dateDebut + '&dateFin=' + dateFin+"&etat=now", function(err, response, body) {}))
+    console.log(curl.get("https://localhost:3000/apnotpan/api/page=1&dateDebut=" + dateDebut + '&dateFin=' + dateFin+"&etat=now", function(err, response, body) {console.log(response)}))
     return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat=now");
 })
 
@@ -224,7 +225,6 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
             if (result) {
                 let collection = db.get('films')
                 await collection.find({"idFilm":getIdFilm,"commentaires.commentaire":getComment,"commentaires.pseudo":getPseudo},{"commentaires.commentaire":1},function(err,res){
-                    console.log(res)
                     if(!res){
                         let len = res[0].commentaires.length
                         for (let i = 0 ; i<len;i++){
@@ -253,7 +253,7 @@ router.post('/api/formulaireCommentaire', async function (req, res, next) {
                                 }
                             }
                         },function(err,result){
-                            if(err){console.log(err)}
+                            if(err){console.log(err)}else{result}
                         }
                         );
                 });              
@@ -268,8 +268,6 @@ router.get('/api/filmaVenir', async function (req, res, next) {
     var dateDebut = req.body.date_de_debut;
     var dateFin = req.body.date_de_fin;
     
-    console.log("Rentre dans la redirection de filmAVenir")
-    
     if (!dateDebut || !dateFin) {
         // appel de la function pour recup la date 
         dateDebut = getJour("debut","venir");
@@ -278,26 +276,5 @@ router.get('/api/filmaVenir', async function (req, res, next) {
     return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat=venir");
 })
 
-// pas utilisé encore
-router.post('/api/research', async function (req, res, next) {
-    var recup = req.body.search;
-    console.log(recup);
-    res.redirect('research/' + recup);
-})
-
-// pas utilisé encore
-router.get('/api/research/:movie', async function (req, res, next) {
-    var movie = req.params.movie;
-    // var getMovie = () => {
-    //     await axios.get('https://api.themoviedb.org/3/movie/550?api_key=2b56942ec7b5444caeb3c0a9bdac8f91')
-    //         .then(response => { this.results = response.data.results });
-    //     console.log(response);
-    // };
-    getMovie();
-    
-    res.render('movie', {
-        movie: movie,
-    });
-})
 
 module.exports = router;

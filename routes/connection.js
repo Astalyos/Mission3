@@ -9,7 +9,6 @@ router.get('/admin', async function (req, res, next) {
   var collection = db.get('accounts');
 
   var collectUsers = await collection.find({});
-  // var collectUsers = await db.getCollection('accounts').find({});
   var succes = true;
   res.render('admin', {
     users: collectUsers,
@@ -42,13 +41,11 @@ router.get('/', async function (req, res, next) {
         }
       }
     });
-
   var collection = db.get('accounts');
-
   if (req.session.uid) {
     isConnected = true;
   }
-  // var collectUsers = await collection.find({});
+
   res.render('connection', {
     title: 'Apnotpan',
     users: collection,
@@ -57,14 +54,6 @@ router.get('/', async function (req, res, next) {
   });
 });
 
-// function checkLogin(dbRequest, login, password) {
-//   if (login === dbRequest[0].login && password === dbRequest.passe) {
-//     return true;
-//   } else {
-//     return false
-//   }
-// }
-
 
 // Login
 router.post('/login', async function (req, res, next) {
@@ -72,12 +61,10 @@ router.post('/login', async function (req, res, next) {
   var email = req.body.email;
   var password = req.body.password;
   var dbRequest = await db.get('accounts').find({ email: email });
-  var getPseudo = dbRequest[0].pseudo;
-  var getemail = dbRequest[0].email;
-  var getId = dbRequest[0]._id;
+  // var getPseudo = dbRequest[0].pseudo;  !!!
+  // var getemail = dbRequest[0].email; !!!
+  // var getId = dbRequest[0]._id;    !!!
   var getpassword = dbRequest[0].passe;
-  // console.log(dbRequest);
-  console.log("email : " + getemail, "  password : " + getpassword, "  pseudo : " + getPseudo , "  id : " + getId);
 
   await Account.findOne({ "email": email },
     function (err, result) {
@@ -90,8 +77,7 @@ router.post('/login', async function (req, res, next) {
             req.session.uid = result._id;
             req.session.email = result.email;
             req.session.pseudo = result.pseudo;
-            console.log("Connection Réussi !")
-            console.log(req.session.email, req.session.uid, req.session.pseudo);
+
             res.redirect('/apnotpan/api/getdate');
           } else {
             console.log("Mot de passe incorrect...");
@@ -106,22 +92,6 @@ router.post('/login', async function (req, res, next) {
   );
 });
 
-
-
-
-// try {
-//   if (login === getlogin && password === getpassword) {
-//     console.log('Connection réussi !');
-//     res.redirect('/connection/admin');
-//   } else {
-//     console.log('Connection échoué :c ');
-//     res.redirect('/connection');
-//   }
-// } catch (err) {
-//   // Là, cela c'est mal passé...
-//   res.status(500).send(err);
-// }
-
 // Register
 router.post('/register', async function (req, res, next) {
   var db = req.db;
@@ -129,7 +99,7 @@ router.post('/register', async function (req, res, next) {
   var registerPassword = req.body.registerPassword;
   var registerPseudo = req.body.registerPseudo;
   var verifPassword = req.body.confirmRegisterPassword;
-  var dbRequest = await db.get('accounts').find({ email: registerEmail });
+  // var dbRequest = await db.get('accounts').find({ email: registerEmail });  !!!
 
   if (registerPassword === verifPassword) {
     await Account.findOne({ "email": registerEmail },
@@ -145,7 +115,7 @@ router.post('/register', async function (req, res, next) {
               passe: registerPassword,
               role: 'defaultUser'
             });
-            console.log(newUser);
+
             // Saving it to the database.
             newUser.save(function (err) { if (err) console.log('Erreur de sauvegarde !'+err) });
             console.log("Félicitation, vous êtes enregistré !");
@@ -157,7 +127,6 @@ router.post('/register', async function (req, res, next) {
     );
   } else 
   {
-    console.log("mot de passe : " + registerPassword + ", verif : " + verifPassword);
     console.log("Les mots de passe ne correspondent pas, ou l'utilisateur existe déjà, veuillez réessayez.");
     res.redirect('/connection');
   }
@@ -174,8 +143,7 @@ router.post('/register', async function (req, res, next) {
           req.session.email = result.email;
           req.session.uid = result._id;
           console.log("Connection Réussi !")
-          console.log(req.session.email, req.session.pseudo, req.session.uid);
-          res.redirect('/apnotpan/api/page=1&dateDebut=2020-03-01&dateFin=2020-03-31');
+          res.redirect('/apnotpan/api/page=1&dateDebut=2020-03-01&dateFin=2020-03-31'); // !!! CHANGE MOI SA AVEC LUNE DES ROUTES QUI REDIRECT COGNIO
         } else {
           console.log("something went wrong (connection.js ligne 180)")
         }
@@ -184,32 +152,11 @@ router.post('/register', async function (req, res, next) {
   );
 });
 
-
-
-// var dbRequest = await db.get('accounts').find({ login: 'Admin' });
-// var getlogin = dbRequest[0].login;
-// var getpassword = dbRequest[0].passe;
-// console.log(dbRequest);
-// console.log("user : " + getlogin, "  password : " + getpassword)
-// try {
-//   if (login === getlogin && password === getpassword) {
-//     console.log('Connection réussi !');
-//     res.redirect('/connection/admin');
-//   } else {
-//     console.log('Connection échoué :c ');
-//     res.redirect('/connection');
-//   }
-// } catch (err) {
-//   // Là, cela c'est mal passé...
-//   res.status(500).send(err);
-// }
-
 // deconnexion
 router.get('/deconnexion', async function (req, res, next) {
   console.log(req.session.uid); 
   req.session.destroy();
   return res.redirect('/connection');
 });
-
 
 module.exports = router;

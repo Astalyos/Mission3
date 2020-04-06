@@ -161,7 +161,7 @@ router.get('/api/getdate', async function (req, res, next) {
         dateDebut = getJour("debut","now");
         dateFin = getJour("fin","now");
     };
-    console.log(curl.get("https://localhost:3000/apnotpan/api/page=1&dateDebut=" + dateDebut + '&dateFin=' + dateFin+"&etat=now", function(err, response, body) {console.log(response)}))
+    curl.get('https://api.themoviedb.org/3/discover/movie?api_key=2b56942ec7b5444caeb3c0a9bdac8f91&language=fr-FR&sort_by=popularity.desc&page=1&primary_release_date.gte=' + dateDebut + '&primary_release_date.lte=' + dateFin, function(err, response, body) {if(response){console.log("On a une reponse")}});
     return res.redirect('/apnotpan/api/page=1&dateDebut=' + dateDebut + '&dateFin=' + dateFin+"&etat=now");
 })
 

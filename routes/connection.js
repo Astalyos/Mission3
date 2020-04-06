@@ -19,7 +19,6 @@ router.get('/admin', async function (req, res, next) {
 // Affichage de la liste
 router.get('/', async function (req, res, next) {
   if (req.session.uid){
-    console.log(req.session.uid);
   }
   var db = req.db;
   var isConnected = false;
@@ -60,10 +59,7 @@ router.post('/login', async function (req, res, next) {
   var db = req.db;
   var email = req.body.email;
   var password = req.body.password;
-  var dbRequest = await db.get('accounts').find({ email: email });
-  // var getPseudo = dbRequest[0].pseudo;  !!!
-  // var getemail = dbRequest[0].email; !!!
-  // var getId = dbRequest[0]._id;    !!!
+  var dbRequest = await db.get('accounts').find({ email: email },{"passe":1});
   var getpassword = dbRequest[0].passe;
 
   await Account.findOne({ "email": email },
@@ -99,7 +95,6 @@ router.post('/register', async function (req, res, next) {
   var registerPassword = req.body.registerPassword;
   var registerPseudo = req.body.registerPseudo;
   var verifPassword = req.body.confirmRegisterPassword;
-  // var dbRequest = await db.get('accounts').find({ email: registerEmail });  !!!
 
   if (registerPassword === verifPassword) {
     await Account.findOne({ "email": registerEmail },
@@ -143,7 +138,7 @@ router.post('/register', async function (req, res, next) {
           req.session.email = result.email;
           req.session.uid = result._id;
           console.log("Connection Réussi !")
-          res.redirect('/apnotpan/api/page=1&dateDebut=2020-03-01&dateFin=2020-03-31'); // !!! CHANGE MOI SA AVEC LUNE DES ROUTES QUI REDIRECT COGNIO
+          res.redirect('/apnotpan/api/getdate');
         } else {
           console.log("something went wrong (connection.js ligne 180)")
         }
@@ -154,7 +149,6 @@ router.post('/register', async function (req, res, next) {
 
 // deconnexion
 router.get('/deconnexion', async function (req, res, next) {
-  console.log(req.session.uid); 
   req.session.destroy();
   return res.redirect('/connection');
 });

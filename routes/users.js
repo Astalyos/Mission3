@@ -25,7 +25,6 @@ router.get('/', async function (req, res, next) {
         }
         // si result
         getAdminId = result._id;
-        console.log("uid admin : "+getAdminId, "req.session.uid : "+ req.session.uid);
       }
     }
   );
@@ -44,38 +43,5 @@ router.get('/', async function (req, res, next) {
     connection: succes
   });
 });
-
-// function checkLogin(dbRequest, login, password) {
-//   if (login === dbRequest[0].login && password === dbRequest.passe) {
-//     return true;
-//   } else {
-//     return false
-//   }
-// }
-
-//Requete connection
-// router.post('/connection', async function (req, res, next) {
-//   var db = req.db;
-//   var dbRequest = await db.get('accounts').find({ login: 'Admin' });
-//   var login = req.body.login;
-//   var password = req.body.password;
-//   var getlogin = dbRequest[0].login;
-//   var getpassword = dbRequest[0].passe;
-//   console.log(dbRequest);
-//   console.log("user : " + getlogin, "  password : " + getpassword)
-//   try {
-//     if (login === getlogin && password === getpassword) {
-//       console.log('Connection réussi !');
-//       res.redirect('/users/admin');
-//     } else {
-//       console.log('Connection échoué :c ');
-//       res.redirect('/users');
-//     }
-//   } catch (err) {
-//     // Là, cela c'est mal passé...
-//     res.status(500).send(err);
-//   }
-// });
-
 
 module.exports = router;

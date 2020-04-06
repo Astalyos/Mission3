@@ -19,9 +19,6 @@ router.get('/', async function (req, res, next) {
         }
         data = result
     })
-    // console.log(data)
-    
-    // console.log(collectFilmUserCommented[0].commentaires)
     res.render('critique', {
         title: 'Apnotpan',
         result: data,
@@ -46,22 +43,18 @@ router.post('/modifComm',async function(req,res,next){
     
     if (etat == "modify"){
         let collection = db.get('films')
-        console.log("test 49 ");
         await collection.find({"idFilm":filmid},{ "commentaires.pseudo":1,"commentaires.email":1,"commentaires.uid":1,"commentaires.note":1,"commentaires.commentaire":1},
         async function(err,resu){
             if(err){
                 console.log(err)
             }else{
-                console.log("55")
                 let len = resu[0].commentaires.length
                 for(let i = 0 ; i<len; i++){
                     if(resu[0].commentaires[i].commentaire == lastCom && resu[0].commentaires[i].pseudo == getPseudo){
                         positionInArrayOfCOmments = i;
-                        
                     }
                 }
                 commentairePosition = "commentaires."+positionInArrayOfCOmments;
-                console.log("65 "+commentairePosition)
 
                 // requete bdd qui modifie le commentaire de la personne donc mettre sur le pug un input hidden de l'ancien commentaire et du nouveau !!!
                 // requete bdd 
@@ -91,8 +84,6 @@ router.post('/modifComm',async function(req,res,next){
                         }
                         else{
                             console.log("Modification réalisée");
-                            console.log("Result = ")
-                            console.log(result)
                             // console.log("Comme position "+commentairePosition)
                         }
                     });

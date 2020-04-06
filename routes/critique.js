@@ -55,9 +55,7 @@ router.post('/modifComm',async function(req,res,next){
                     }
                 }
                 commentairePosition = "commentaires."+positionInArrayOfCOmments;
-
                 // requete bdd qui modifie le commentaire de la personne donc mettre sur le pug un input hidden de l'ancien commentaire et du nouveau !!!
-                // requete bdd 
                 await collection.update(
                     {
                         "idFilm":filmid,
@@ -68,7 +66,7 @@ router.post('/modifComm',async function(req,res,next){
                     },
                     {$set:
                         {
-                            [commentairePosition]: // commentairePosition n'est pas prise comme une variable mais comme un string
+                            [commentairePosition]:
                             {
                                 "pseudo" : getPseudo,
                                 "email": getEmail,
@@ -84,7 +82,6 @@ router.post('/modifComm',async function(req,res,next){
                         }
                         else{
                             console.log("Modification réalisée");
-                            // console.log("Comme position "+commentairePosition)
                         }
                     });
                     res.redirect("/critique")

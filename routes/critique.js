@@ -42,85 +42,63 @@ router.post('/modifComm',async function(req,res,next){
     var getEmail = req.session.email;
     var getPseudo = req.session.pseudo;
     var positionInArrayOfCOmments = 0;
-    var commentairePosition = "";
+    var commentairePosition = "commentaires.0";
     
     if (etat == "modify"){
         let collection = db.get('films')
+        console.log("test 49 ");
         await collection.find({"idFilm":filmid},{ "commentaires.pseudo":1,"commentaires.email":1,"commentaires.uid":1,"commentaires.note":1,"commentaires.commentaire":1},
-        async function(err,res){
+        async function(err,resu){
             if(err){
                 console.log(err)
-            }else{               
-                let len = res[0].commentaires.length
+            }else{
+                console.log("55")
+                let len = resu[0].commentaires.length
                 for(let i = 0 ; i<len; i++){
-                    if(res[0].commentaires.commentaire == lastCom && res[0].commentaires.pseudo == getPseudo){
+                    if(resu[0].commentaires[i].commentaire == lastCom && resu[0].commentaires[i].pseudo == getPseudo){
                         positionInArrayOfCOmments = i;
-                        commentairePosition = "'commentaires."+positionInArrayOfCOmments+"'";
+                        
                     }
                 }
-            }
-        }
-        )
-        // requete bdd qui modifie le commentaire de la personne donc mettre sur le pug un input hidden de l'ancien commentaire et du nouveau !!!
-        // requete bdd 
-        
-        await collection.update(
-            {
-                "idFilm":filmid,
-                "commentaires.uid":getUid,
-                "commentaires.commentaire":lastCom,
-                "commentaires.pseudo":getPseudo,
-                "commentaires.email":getEmail
-            },
-            {$set:
-                {
-                    commentairePosition:
+                commentairePosition = "commentaires."+positionInArrayOfCOmments;
+                console.log("65 "+commentairePosition)
+
+                // requete bdd qui modifie le commentaire de la personne donc mettre sur le pug un input hidden de l'ancien commentaire et du nouveau !!!
+                // requete bdd 
+                await collection.update(
                     {
-                        "pseudo" : getPseudo,
-                        "email": getEmail,
-                        "uid": getUid,
-                        "note": getNote,
-                        "commentaire":newCom
-                    }
-                }
-            },
-            async function (err,result){
-                if(err){
-                    console.log("Probleme de modification" +err)
-                    // db.films.update({'idFilm':filmid,
-                    // 'commentaires.uid':getUid,
-                    // 'commentaires.commentaire':lastCom,
-                    // 'commentaires.pseudo':getPseudo,
-                    // 'commentaires.email':getEmail},
-                    // {$set:{commentairePosition:{'pseudo':'"+getPseudo+"','email':'"+ getEmail+"','uid':'"+getUid+"','note':'"+ getNote+"','commentaire':'"+newCom+"'}}})"
-                }
-                else{
-                    console.log("Modification réalisée");
-                    console.log("Result = ")
-                    console.log(result)
-                    // console.log("Comme position "+commentairePosition)
-                    //console.log("db.films.update({'idFilm':'"+filmid+"','commentaires.uid':'"+getUid+"','commentaires.commentaire':'"+lastCom+"','commentaires.pseudo':'"+getPseudo+"','commentaires.email':'"+getEmail+"'},{$set:{"+commentairePosition+":{'pseudo':'"+getPseudo+"','email':'"+ getEmail+"','uid':'"+getUid+"','note':'"+ getNote+"','commentaire':'"+newCom+"'}}})")
-                    //Envoyez les anciens comms dans la bdd
-                    // collection.update(
-                    //     {
-                    //         "idFilm":filmid,
-                    //         "commentaires.uid":getUid
-                    //     },
-                    //     {$set:
-                    //         {
-                    //             "commentaires":
-                    //             [{
-                    //                 "pseudo" : getPseudo,
-                    //                 "email": getEmail,
-                    //                 "uid": getUid,
-                    //                 "note": getNote,
-                    //                 "commentaire":newCom
-                    //             }]
-                    //         }
-                    //     }
+                        "idFilm":filmid,
+                        "commentaires.uid":getUid,
+                        "commentaires.commentaire":lastCom,
+                        "commentaires.pseudo":getPseudo,
+                        "commentaires.email":getEmail
+                    },
+                    {$set:
+                        {
+                            $commentairePosition: // commentairePosition n'est pas prise comme une variable mais comme un string
+                            {
+                                "pseudo" : getPseudo,
+                                "email": getEmail,
+                                "uid": getUid,
+                                "note": getNote,
+                                "commentaire":newCom
+                            }
+                        }
+                    },
+                    async function (err,result){
+                        if(err){
+                            console.log("Probleme de modification" +err)
+                        }
+                        else{
+                            console.log("Modification réalisée");
+                            console.log("Result = ")
+                            console.log(result)
+                            // console.log("Comme position "+commentairePosition)
+                        }
+                    });
+                    res.redirect("/critique")
                 }
             });
-            res.redirect("/critique")
         }
         else if(etat == "delete"){
             let collection = db.get('films')
